@@ -1,0 +1,308 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Szakdolgozat.MainPage"
+             Title="">
+
+    <StackLayout>
+
+        <StackLayout Orientation="Vertical" Margin="5">
+            <Line X1="0" Y1="0" X2="10000" Y2="0" Stroke="Skyblue" ScaleY="3"/>
+        </StackLayout>
+
+        <StackLayout Orientation="Horizontal" Margin="5, 0, 0, 0">
+
+            <Button Text="Project"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Start"
+                        IsEnabled="True"
+                        Clicked="ProjectClicked"
+                        BackgroundColor="AliceBlue"
+                        TextColor="Black"
+                        BorderColor="SkyBlue"
+                        BorderWidth="1.5">
+            </Button>
+            <Button Text="Google Maps"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Start"
+                        IsEnabled="True"
+                        Clicked="GoogleMapsClicked"
+                        BackgroundColor="AliceBlue"
+                        TextColor="Black"
+                        Margin="1">
+            </Button>
+            <Button Text="Urbanization Score"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Start"
+                        IsEnabled="True"
+                        Clicked="UrbanizationScoreClicked"
+                        BackgroundColor="AliceBlue"
+                        TextColor="Black">
+            </Button>
+            <Button Text="Annotation"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Start"
+                        IsEnabled="True"
+                        Clicked="AnnotationClicked"
+                        BackgroundColor="AliceBlue"
+                        TextColor="Black"
+                        Margin="1">
+            </Button>
+            <Button Text="Import / Export"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Start"
+                        IsEnabled="True"
+                        Clicked="ImportExportClicked"
+                        BackgroundColor="AliceBlue"
+                        TextColor="Black"
+                        Margin="1">
+            </Button>
+
+        </StackLayout>
+
+        <StackLayout Orientation="Vertical" Margin="5">
+            <Line X1="0" Y1="0" X2="10000" Y2="0" Stroke="Skyblue" ScaleY="3"/>
+        </StackLayout>
+
+        <StackLayout Orientation="Vertical">
+
+            <StackLayout Orientation="Horizontal" Margin="10, 0, 0, 0">
+
+                <Button Text="  New&#x0a;Project"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Start"
+                            IsEnabled="True"
+                            ImageSource="file.png"
+                            ContentLayout="Top, 1"
+                            BackgroundColor="AliceBlue"
+                            TextColor="Black"
+                            Clicked="NewProjectClicked"
+                            x:Name="newProjectBTN">
+                </Button>
+                
+                <StackLayout Orientation="Vertical" VerticalOptions="Center">
+                    
+                    <Entry Placeholder = "Enter filename"
+                                IsVisible="false"
+                                x:Name="getFilename">
+                    </Entry>
+                    <Button Text="Create Project!"
+                                HorizontalOptions="Start"
+                                VerticalOptions="Start"
+                                IsEnabled="True"
+                                IsVisible="false"
+                                BackgroundColor="AliceBlue"
+                                TextColor="Black"
+                                Clicked="SaveNewProject"
+                                x:Name="createProjectBTN">
+                    </Button>
+                    
+                </StackLayout>
+
+                <Button Text="Back!"
+                                HorizontalOptions="Start"
+                                VerticalOptions="Center"
+                                IsEnabled="True"
+                                IsVisible="false"
+                                BackgroundColor="AliceBlue"
+                                TextColor="Black"
+                                Clicked="Back"
+                                x:Name="backBTN">
+                </Button>
+                
+                <Button Text=" Open&#x0a;Project"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Start"
+                            IsEnabled="True"
+                            ImageSource="folder.png"
+                            ContentLayout="Top, 1"
+                            BackgroundColor="AliceBlue"
+                            TextColor="Black"
+                            Margin="1"
+                            x:Name="openProjectBTN"
+                            Clicked="OpenProjectClicked">
+                </Button>
+                <Button Text="  Save&#x0a;Project"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Start"
+                            IsEnabled="True"
+                            ImageSource="floppy.png"
+                            ContentLayout="Top, 1"
+                            BackgroundColor="AliceBlue"
+                            TextColor="Black"
+                            x:Name="saveProjectBTN"
+                            Clicked="SaveProjectClicked">
+                </Button>
+                <Button Text=" Project&#x0a;Settings"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Start"
+                            IsEnabled="True"
+                            ImageSource="gears.png"
+                            ContentLayout="Top, 1"
+                            BackgroundColor="AliceBlue"
+                            TextColor="Black"
+                            Margin="1"
+                            x:Name="projectSettingsBTN"
+                            Clicked="SettingsClicked">
+                </Button>
+                <Button Text="&#x0a;Help"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Start"
+                            IsEnabled="True"
+                            ImageSource="help.png"
+                            ContentLayout="Top, 1"
+                            BackgroundColor="AliceBlue"
+                            TextColor="Black"
+                            x:Name="helpBTN"
+                            Clicked="HelpClicked">
+                </Button>
+
+            </StackLayout>
+
+        </StackLayout>
+
+        <StackLayout Orientation="Vertical" Margin="5">
+            <Line X1="0" Y1="0" X2="10000" Y2="0" Stroke="Skyblue" ScaleY="3"/>
+        </StackLayout>
+
+        <StackLayout Orientation="Horizontal" x:Name="layoutProjectName" IsVisible="false">
+
+            <Label Text="Project name: " 
+                   Margin="50, 30, 0, 0"
+                   x:Name="textProjectName">
+            </Label>
+            <Entry Text="" 
+                   Margin="60, 24, 0, 0" 
+                   IsEnabled="False"
+                   WidthRequest="300"
+                   x:Name="entryProjectName">
+            </Entry>
+            
+        </StackLayout>
+
+        <StackLayout Orientation="Horizontal" x:Name="layoutProjectPath" IsVisible="false">
+
+            <Label Text="Project path: " 
+                   Margin="50, 30, 0, 0"
+                   x:Name="textProjectPath">
+            </Label>
+            <Entry Text="" 
+                   Margin="67, 24, 0, 0" 
+                   IsEnabled="False"
+                   WidthRequest="1000"
+                   x:Name="entryProjectPath">
+            </Entry>
+
+        </StackLayout>
+
+        <Label Text="Locations: " 
+               Margin="50, 15, 0, 0"
+               x:Name="textLocation"
+               IsVisible="false">
+        </Label>
+
+        <StackLayout Orientation="Horizontal" x:Name="layoutTextAttributes" IsVisible="false">
+
+            <Label Text="Name: " 
+                   Margin="50, 7, 0, 0">
+            </Label>
+            <Label Text="Latitude: " 
+                   Margin="200, 7, 0, 0">
+            </Label>
+            <Label Text="Longitude: " 
+                   Margin="200, 7, 0, 0">
+            </Label>
+            <Label Text="Area size (meter): " 
+                   Margin="200, 7, 0, 0">
+            </Label>
+            <Label Text="Zoom (m/px): " 
+                   Margin="200, 7, 0, 0">
+            </Label>
+
+        </StackLayout>
+
+        <StackLayout Orientation="Horizontal" x:Name="layoutEntryAttributes" IsVisible="false">
+
+            <Entry Text="" 
+                   Margin="50, 10, 0, 0"
+                   WidthRequest="200"
+                   x:Name="LocationName">
+            </Entry>
+            <Entry Text="" 
+                   Margin="40, 10, 0, 0"
+                   WidthRequest="200"
+                   x:Name="LatitudeName">
+            </Entry>
+            <Entry Text="" 
+                   Margin="60, 10, 0, 0"
+                   WidthRequest="200"
+                   x:Name="LongitudeName">
+            </Entry>
+            <Entry Text="" 
+                   Margin="70, 10, 0, 0"
+                   WidthRequest="200"
+                   x:Name="AreaSize">
+            </Entry>
+            <Entry Text="" 
+                   Margin="115, 10, 0, 0"
+                   WidthRequest="200"
+                   x:Name="Zoom">
+            </Entry>
+
+        </StackLayout>
+
+        <StackLayout Orientation="Horizontal" x:Name="layoutEntryArea" IsVisible="false">
+            <ScrollView>
+                <Label WidthRequest="1200" 
+                       Margin="50"
+                       HeightRequest="250"
+                       VerticalTextAlignment="Start"
+                       IsEnabled="False"
+                       x:Name="entryArea"
+                       BackgroundColor="AliceBlue">
+                </Label>
+            </ScrollView>
+
+            <StackLayout Orientation="Vertical">
+
+                <Button Text="Add Location"
+                        Margin="-10, 50, 0, 0"
+                        WidthRequest="200"
+                        BackgroundColor="AliceBlue"
+                        TextColor="Black"
+                        x:Name="AddLocationBTN"
+                        Clicked="AddLocationClicked">
+                </Button>
+                <Button Text="Convert Angle"
+                        Margin="-10, 5, 0, 0"
+                        WidthRequest="200"
+                        BackgroundColor="AliceBlue"
+                        TextColor="Black"
+                        x:Name="ConvertAngleBTN">
+                </Button>
+                <Button Text="Remove Selected Location"
+                        Margin="-10, 77, 0, 0"
+                        WidthRequest="200"
+                        BackgroundColor="AliceBlue"
+                        TextColor="Black"
+                        x:Name="RemoveSelectedLocation">
+                </Button>
+                <Button Text="Remove All Location"
+                        Margin="-10, 5, 0, 0"
+                        WidthRequest="200"
+                        BackgroundColor="AliceBlue"
+                        TextColor="Black"
+                        x:Name="RemoveAllLocation">
+                </Button>
+                
+            </StackLayout>
+            
+        </StackLayout>
+
+        <StackLayout Orientation="Vertical" Margin="5, 0, 5, 5">
+            <Image Source="project_background.png" IsVisible="true" x:Name="bgImage"></Image>
+        </StackLayout>
+
+    </StackLayout>
+
+</ContentPage>

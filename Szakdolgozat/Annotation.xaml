@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Szakdolgozat.Annotation"
+             Title="">
+
+    <StackLayout>
+
+        <StackLayout Orientation="Vertical" Margin="5">
+            <Line X1="0" Y1="0" X2="10000" Y2="0" Stroke="Skyblue" ScaleY="3"/>
+        </StackLayout>
+
+        <StackLayout Orientation="Horizontal" Margin="5, 0, 0, 0">
+
+            <Button Text="Project"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Start"
+                        IsEnabled="True"
+                        Clicked="ProjectClicked"
+                        BackgroundColor="AliceBlue"
+                        TextColor="Black">
+            </Button>
+            <Button Text="Google Maps"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Start"
+                        IsEnabled="True"
+                        Clicked="GoogleMapsClicked"
+                        BackgroundColor="AliceBlue"
+                        TextColor="Black"
+                        Margin="1">
+            </Button>
+            <Button Text="Urbanization Score"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Start"
+                        IsEnabled="True"
+                        Clicked="UrbanizationScoreClicked"
+                        BackgroundColor="AliceBlue"
+                        TextColor="Black">
+            </Button>
+            <Button Text="Annotation"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Start"
+                        IsEnabled="True"
+                        Clicked="AnnotationClicked"
+                        BackgroundColor="AliceBlue"
+                        TextColor="Black"
+                        Margin="1"
+                        BorderColor="SkyBlue"
+                        BorderWidth="1.5">
+            </Button>
+            <Button Text="Import / Export"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Start"
+                        IsEnabled="True"
+                        Clicked="ImportExportClicked"
+                        BackgroundColor="AliceBlue"
+                        TextColor="Black"
+                        Margin="1">
+            </Button>
+
+        </StackLayout>
+
+        <StackLayout Orientation="Vertical" Margin="5">
+            <Line X1="0" Y1="0" X2="10000" Y2="0" Stroke="Skyblue" ScaleY="3"/>
+        </StackLayout>
+
+        <StackLayout Orientation="Vertical">
+
+            <StackLayout Orientation="Horizontal" Margin="10, 0, 0, 0">
+
+                <Button Text="  Show&#x0a;  Labels"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Start"
+                            IsEnabled="True"
+                            ImageSource="earth.png"
+                            ContentLayout="Top, 1"
+                            BackgroundColor="AliceBlue"
+                            TextColor="Black">
+                </Button>
+                <Button Text="Recalculate&#x0a;    Indices"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Start"
+                            IsEnabled="True"
+                            ImageSource="calculator.png"
+                            ContentLayout="Top, 1"
+                            BackgroundColor="AliceBlue"
+                            TextColor="Black"
+                            Margin="1">
+                </Button>
+
+            </StackLayout>
+
+        </StackLayout>
+
+        <StackLayout Orientation="Vertical" Margin="5">
+            <Line X1="0" Y1="0" X2="10000" Y2="0" Stroke="Skyblue" ScaleY="3"/>
+        </StackLayout>
+
+        <StackLayout Orientation="Vertical" Margin="5, 0, 5, 5">
+            <Image Source="project_background.png"></Image>
+        </StackLayout>
+
+    </StackLayout>
+
+</ContentPage>
