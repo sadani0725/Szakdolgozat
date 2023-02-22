@@ -49,11 +49,27 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <AndroidResource Remove="bin\**" />
+	  <Compile Remove="bin\**" />
+	  <EmbeddedResource Remove="bin\**" />
+	  <MauiCss Remove="bin\**" />
+	  <MauiXaml Remove="bin\**" />
+	  <None Remove="bin\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Compile Remove="NewPage1.xaml.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <MauiXaml Remove="NewPage1.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Api-key.db" />
+	  <None Remove="apikey.db" />
+	  <None Remove="apikey.txt" />
+	  <None Remove="trains.db" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -63,6 +79,14 @@
 	    <VersionMajor>2</VersionMajor>
 	    <Guid>215d64d2-031c-33c7-96e3-61794cd1ee61</Guid>
 	  </COMReference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="..\.editorconfig" Link=".editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="EntityFramework" Version="6.4.4" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -4,66 +4,85 @@ namespace Szakdolgozat;
 
 public partial class MainPage : ContentPage
 {
-	private static string ThisPage = "Project";
-    string folderName = @"c:\UrbanizationProjects";
-    string filename;
-    string pathString;
-    string subfile;
-    string[] fields;
-    TextFieldParser parser;
-    int num;
-    List<string> datas = new List<string>();
 
+    //  A Page működéséhez szükséges adatok
+	private static string ThisPage = "Project"; 
+    string filename;    //  Projekt neve kiterjesztés nélkül
+    string subfile;     //  Projekt neve kiterjesztéssel
+    string pathString;  //  Elérési útvonal
+    string projectPathString = System.IO.Path.Combine(@"c:\UrbanizationProjects", "Projects");      //  Alapértelmezett mentési hely Windows rendszereken (C: meghajtó)
+    ProjectList datas;  //  Projekt adatait tárolja (Név, Elérési út, Adatok)
+
+    //  Inicializálás
     public MainPage()
 	{
 		InitializeComponent();	
 	}
 
-	private async void ProjectClicked(object sender, EventArgs e)
+    //  Inicializálás adatfogadással
+    public MainPage(ProjectList _datas)
+    {
+        InitializeComponent();
+        if (_datas != null)
+        {
+            datas = _datas;
+            filename = _datas.GetProjectName().Remove(_datas.GetProjectName().Length - 4);
+            subfile = _datas.GetProjectName();
+            pathString = _datas.GetPathString();
+        }     
+    }
+
+    //  Menüben a Project gombra kattintáskor ez fut le
+    private async void ProjectClicked(object sender, EventArgs e)
 	{
 		if (ThisPage == "Project")
 		{
 			return;
 		}
-		await Navigation.PushAsync(new MainPage());
+        await Navigation.PushModalAsync(new MainPage(datas));
     }
 
+    //  Menüben a Google Maps gombra kattintáskor ez fut le
     private async void GoogleMapsClicked(object sender, EventArgs e)
     {
         if (ThisPage == "GoogleMaps")
         {
             return;
         }
-        await Navigation.PushAsync(new GoogleMaps());
+        await Navigation.PushModalAsync(new GoogleMaps(datas));
     }
 
+    //  Menüben az Urbanization Score gombra kattintáskor ez fut le
     private async void UrbanizationScoreClicked(object sender, EventArgs e)
     {
         if (ThisPage == "UrbanizationScore")
         {
             return;
         }
-        await Navigation.PushAsync(new UrbanizationScore());
+        await Navigation.PushModalAsync(new UrbanizationScore(datas));
     }
 
+    //  Menüben az Annotation gombra kattintáskor ez fut le
     private async void AnnotationClicked(object sender, EventArgs e)
     {
         if (ThisPage == "Annotation")
         {
             return;
         }
-        await Navigation.PushAsync(new Annotation());
+        await Navigation.PushModalAsync(new Annotation(datas));
     }
 
+    //  Menüben az Import / Export gombra kattintáskor ez fut le
     private async void ImportExportClicked(object sender, EventArgs e)
     {
         if (ThisPage == "ImportExport")
         {
             return;
         }
-        await Navigation.PushAsync(new ImportExport());
+        await Navigation.PushModalAsync(new ImportExport(datas));
     }
 
+    //  New Project gombra kattintva ez fut le
     private void NewProjectClicked(object sender, EventArgs e) 
     {
         bgImage.IsVisible = true;
@@ -84,6 +103,7 @@ public partial class MainPage : ContentPage
 
     }
 
+    //  New Project kisegítő függvénye
     private void SaveNewProject(object sender, EventArgs e) 
     {
 
@@ -91,9 +111,7 @@ public partial class MainPage : ContentPage
         {
             filename = getFilename.Text.ToString();
 
-            pathString = System.IO.Path.Combine(folderName, "Projects");
-
-            pathString = System.IO.Path.Combine(pathString, filename);
+            pathString = System.IO.Path.Combine(projectPathString, filename);
 
             if (!System.IO.Directory.Exists(pathString)) 
             {
@@ -108,14 +126,12 @@ public partial class MainPage : ContentPage
                 System.IO.Directory.CreateDirectory(pathString);
 
                 subfile = filename + ".csv";
-                pathString = System.IO.Path.Combine(folderName, "Projects", subfile);
+                pathString = System.IO.Path.Combine(projectPathString, subfile);
 
                 using (var fs = System.IO.File.CreateText(pathString))
                 {
                     
                 }
-
-                num = 1;
 
                 openProjectBTN.IsVisible = true;
                 saveProjectBTN.IsVisible = true;
@@ -128,6 +144,8 @@ public partial class MainPage : ContentPage
 
                 entryProjectName.Text = filename;
                 entryProjectPath.Text = pathString;
+
+                datas = new ProjectList(subfile, pathString);
             }
             else
             {
@@ -141,6 +159,7 @@ public partial class MainPage : ContentPage
         }  
     }
 
+    //  Add Location gombra kattintva ez fut le
     private void AddLocationClicked(object sender, EventArgs e) 
     {
         
@@ -150,40 +169,23 @@ public partial class MainPage : ContentPage
         }
         else
         {
-            pathString = System.IO.Path.Combine(folderName, "Projects", filename);
-            pathString = System.IO.Path.Combine(pathString, num.ToString());
-            System.IO.Directory.CreateDirectory(pathString);
+
             subfile = filename + ".csv";
 
-            List<string> localdatas = new List<string>();
-
-            localdatas.Add(LocationName.Text.ToString());
-            localdatas.Add(LatitudeName.Text.ToString());
-            localdatas.Add(LongitudeName.Text.ToString());
-            localdatas.Add(AreaSize.Text.ToString());
-            localdatas.Add(Zoom.Text.ToString());
-
-            datas.Add(LocationName.Text.ToString());
-            datas.Add(LatitudeName.Text.ToString());
-            datas.Add(LongitudeName.Text.ToString());
-            datas.Add(AreaSize.Text.ToString());
-            datas.Add(Zoom.Text.ToString());
+            datas.AddNewProjectType(new ProjectType(datas.GetProjectList().Count + 1 , Convert.ToInt32(LatitudeName.Text.ToString()), Convert.ToInt32(LongitudeName.Text.ToString()), LocationName.Text.ToString(), Convert.ToInt32(AreaSize.Text.ToString()), Convert.ToInt32(Zoom.Text.ToString())));
 
             string s = "";
-            foreach (var item in localdatas)
+            foreach (var item in datas.GetProjectList())
             {
-                s += item + ";";
+                s += item.Num + ";" + item.Latitude + ";" + item.Longitude + ";" + item.Name + ";" + item.Size + ";" + item.Zoom + "\n";
             }
-            //s = s.Remove(s.Length-1);
-            s += "\n";
+            entryArea.Text = s;
 
-            entryArea.Text += s;
-
-            num++;
         }
         
     }
 
+    //  Back gombra kattintva ez fut le
     private void Back(object sender, EventArgs e) 
     {
         openProjectBTN.IsVisible = true;
@@ -196,6 +198,7 @@ public partial class MainPage : ContentPage
         getFilename.Text = "";
     }
 
+    //  Open Project gombra kattintva ez fut le
     private void OpenProjectClicked(object sender, EventArgs e) 
     {
         var customFileType = new FilePickerFileType(
@@ -214,6 +217,7 @@ public partial class MainPage : ContentPage
         
     }
 
+    // Az Open Project kisegítő függvénye
     public async Task<FileResult> PickAndShow(PickOptions options)
     {
         try
@@ -222,25 +226,23 @@ public partial class MainPage : ContentPage
 
             if (result != null)
             {
-                using (parser = new TextFieldParser(@"" + result.FullPath.ToString()))
+                subfile = result.FileName;
+                filename = result.FileName.Remove(result.FileName.Length - 4);
+                pathString = result.FullPath.ToString();
+
+                datas = new ProjectList(subfile, pathString);
+
+                string path = @"" + result.FullPath.ToString();
+
+                string[] lines = System.IO.File.ReadAllLines(path);
+                foreach (string line in lines)
                 {
-                    parser.HasFieldsEnclosedInQuotes = false;
-                    parser.Delimiters = new[] { ";" };
-                    while (!parser.EndOfData)
-                    {
-                        fields = parser.ReadFields();
-                    }
-                    
+                    string[] subs = line.Split(';');
+
+                    datas.AddNewProjectType(new ProjectType(Convert.ToInt32(subs[0].ToString()), Convert.ToInt32(subs[1].ToString()), Convert.ToInt32(subs[2].ToString()), subs[3].ToString(), Convert.ToInt32(subs[4].ToString()), Convert.ToInt32(subs[5].ToString())));
                 }
-            }
 
-            foreach (var item in fields)
-            {
-                datas.Add(item);
-            }
 
-            filename = result.FileName;
-            pathString = result.FullPath.ToString();
 
                 bgImage.IsVisible = false;
                 layoutProjectName.IsVisible = true;
@@ -253,35 +255,25 @@ public partial class MainPage : ContentPage
                 entryProjectName.Text = filename;
                 entryProjectPath.Text = pathString;
 
-                int i = 0;
                 string s = "";
-                foreach (var item in datas)
+                foreach (var item in datas.GetProjectList())
                 {
-                    if (i == 5)
-                    {
-                        //s = s.Remove(s.Length - 1);
-                        s += "\n";
-                        s += item + ";";
-                        i = 0;
-                    }
-                    else
-                    {
-                        s += item + ";";
-                    }
-                    i++;
+                    s += item.Num + ";" + item.Latitude + ";" + item.Longitude + ";" + item.Name + ";" + item.Size + ";" + item.Zoom + "\n";
                 }
                 entryArea.Text = s;
+            }
 
             return result;
         }
         catch (Exception ex)
         {
-
+            DisplayAlert("Error", "The formation of the Project file is not accteptable!", "OK");
         }
 
         return null;
     }
 
+    //  Help gombra kattintva ez fut le
     private void HelpClicked(object sender, EventArgs e) 
     {
         bgImage.IsVisible = true;
@@ -293,24 +285,36 @@ public partial class MainPage : ContentPage
         layoutEntryArea.IsVisible = false;
     }
 
+    //  Save Project gombra kattintva ez fut le
     private void SaveProjectClicked(object sender, EventArgs e)
     {
-        if (datas.Count() == 0)
+        if (filename == null)
         {
             DisplayAlert("Error", "Open a Project!", "OK");
         }
         else
         {
-            if (entryArea.Text != "")
+            if (entryArea.Text != "" && datas != null)
             {
-                pathString = System.IO.Path.Combine(folderName, "Projects", subfile);
+                pathString = System.IO.Path.Combine(projectPathString, subfile);
 
                 using (var fs = System.IO.File.CreateText(pathString))
                 {
                     fs.Write(entryArea.Text.ToString());
                 }
                 //DisplayAlert("Success", "Project created successfully!", "OK");
+
+                for (int i = 0; i < datas.GetProjectList().Count; i++)
+                {
+                    pathString = System.IO.Path.Combine(projectPathString, filename);
+                    pathString = System.IO.Path.Combine(pathString, (i+1).ToString());
+                    if (!System.IO.Directory.Exists(pathString))
+                    {
+                        System.IO.Directory.CreateDirectory(pathString);
+                    }
+                }
                 
+
             }
             else
             {
@@ -320,9 +324,10 @@ public partial class MainPage : ContentPage
        
     }
 
+    //  Project Settings gombra kattintva ez fut le
     private void SettingsClicked(object sender, EventArgs e)
     {
-        if (datas.Count() == 0)
+        if (filename == null)
         {
             DisplayAlert("Error", "Open a Project!", "OK");
         }
@@ -339,27 +344,16 @@ public partial class MainPage : ContentPage
             entryProjectName.Text = filename;
             entryProjectPath.Text = pathString;
 
-            int i = 0;
-            string s = "";
-            foreach (var item in datas)
+            if (datas != null)
             {
-                if (i == 5)
+                string s = "";
+                foreach (var item in datas.GetProjectList())
                 {
-                    //s = s.Remove(s.Length - 1);
-                    s += "\n";
-                    s += item + ";";
-                    i = 0;
+                    s += item.Num + ";" + item.Latitude + ";" + item.Longitude + ";" + item.Name + ";" + item.Size + ";" + item.Zoom + "\n";
                 }
-                else
-                {
-                    s += item + ";";
-                }
-                i++;
+                entryArea.Text = s;
             }
-            entryArea.Text = s;
         }    
 
     }
 }
-
-

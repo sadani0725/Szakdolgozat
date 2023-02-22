@@ -79,9 +79,9 @@
                             Clicked="NewProjectClicked"
                             x:Name="newProjectBTN">
                 </Button>
-                
+
                 <StackLayout Orientation="Vertical" VerticalOptions="Center">
-                    
+
                     <Entry Placeholder = "Enter filename"
                                 IsVisible="false"
                                 x:Name="getFilename">
@@ -96,7 +96,7 @@
                                 Clicked="SaveNewProject"
                                 x:Name="createProjectBTN">
                     </Button>
-                    
+
                 </StackLayout>
 
                 <Button Text="Back!"
@@ -109,7 +109,7 @@
                                 Clicked="Back"
                                 x:Name="backBTN">
                 </Button>
-                
+
                 <Button Text=" Open&#x0a;Project"
                             HorizontalOptions="Start"
                             VerticalOptions="Start"
@@ -177,7 +177,7 @@
                    WidthRequest="300"
                    x:Name="entryProjectName">
             </Entry>
-            
+
         </StackLayout>
 
         <StackLayout Orientation="Horizontal" x:Name="layoutProjectPath" IsVisible="false">
@@ -294,9 +294,9 @@
                         TextColor="Black"
                         x:Name="RemoveAllLocation">
                 </Button>
-                
+
             </StackLayout>
-            
+
         </StackLayout>
 
         <StackLayout Orientation="Vertical" Margin="5, 0, 5, 5">

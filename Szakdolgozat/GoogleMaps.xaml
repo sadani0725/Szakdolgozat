@@ -75,7 +75,8 @@
                             ImageSource="download.png"
                             ContentLayout="Top, 1"
                             BackgroundColor="AliceBlue"
-                            TextColor="Black">
+                            TextColor="Black"
+                            Clicked="DownloadClicked">
                 </Button>
                 <Button Text=" Browse&#x0a; Images"
                             HorizontalOptions="Start"
@@ -85,7 +86,8 @@
                             ContentLayout="Top, 1"
                             BackgroundColor="AliceBlue"
                             TextColor="Black"
-                            Margin="1">
+                            Margin="1"
+                            Clicked="BrowseClicked">
                 </Button>
                 <Button Text="   Set&#x0a;API-key"
                             HorizontalOptions="Start"
@@ -94,7 +96,8 @@
                             ImageSource="key.png"
                             ContentLayout="Top, 1"
                             BackgroundColor="AliceBlue"
-                            TextColor="Black">
+                            TextColor="Black"
+                            Clicked="SetApiKeyClicked">
                 </Button>
                 <Button Text="&#x0a;Help"
                             HorizontalOptions="Start"
@@ -103,7 +106,23 @@
                             ImageSource="help.png"
                             ContentLayout="Top, 1"
                             BackgroundColor="AliceBlue"
-                            TextColor="Black">
+                            TextColor="Black"
+                            x:Name="HelpButton"
+                            Clicked="HelpClicked">
+                </Button>
+                <Entry IsVisible="false"
+                            x:Name="EditApiKey"
+                            HeightRequest="10"
+                            WidthRequest="350"
+                            Margin="10">    
+                </Entry>
+                <Button Text="Save"
+                            BackgroundColor="AliceBlue"
+                            TextColor="Black"
+                            HeightRequest="40"
+                            Clicked="SaveNewApiKeyClicked"
+                            IsVisible="false"
+                            x:Name="SaveApiKeyButton">
                 </Button>
 
             </StackLayout>
