@@ -75,7 +75,8 @@
                             ImageSource="calculator.png"
                             ContentLayout="Top, 1"
                             BackgroundColor="AliceBlue"
-                            TextColor="Black">
+                            TextColor="Black"
+                            Clicked="CalculateScoresClicked">
                 </Button>
                 <Button Text=" Show&#x0a;Results"
                             HorizontalOptions="Start"
@@ -85,7 +86,8 @@
                             ContentLayout="Top, 1"
                             BackgroundColor="AliceBlue"
                             TextColor="Black"
-                            Margin="1">
+                            Margin="1"
+                            Clicked="ShowResultsClicked">
                 </Button>
 
             </StackLayout>
@@ -96,8 +98,19 @@
             <Line X1="0" Y1="0" X2="10000" Y2="0" Stroke="Skyblue" ScaleY="3"/>
         </StackLayout>
 
-        <StackLayout Orientation="Vertical" Margin="5, 0, 5, 5">
-            <Image Source="project_background.png"></Image>
+        <StackLayout Orientation="Horizontal" Margin="5, 0, 5, 5">
+            <Image Source="project_background.png" x:Name="ImageBG"></Image>
+            <Image x:Name="BrowseIMG"
+                        HeightRequest="600"
+                        WidthRequest="600"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Start"
+                        IsVisible="false"
+                        BackgroundColor="AliceBlue">
+            </Image>
+            <StackLayout Orientation="Vertical" Margin="25, 5, 5, 5" x:Name="ButtonLayout" IsVisible="false">
+                
+            </StackLayout>
         </StackLayout>
 
     </StackLayout>

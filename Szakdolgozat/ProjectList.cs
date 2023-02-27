@@ -6,21 +6,27 @@ using System.Threading.Tasks;
 
 namespace Szakdolgozat
 {
-    //  Projekt területeket tartalmaz (projektnév, elérési útvonal, területek)
+    //  Projekt területeket tartalmaz (projektnév, elérési útvonal, területek, PCA eredmények)
     public class ProjectList
     {
         string projectName;
         string pathString;
         List<ProjectType> list;
+        List<PCAResultType> listPCA;
         public ProjectList(string _projectName, string _pathString) 
         {
             projectName = _projectName;
             pathString = _pathString;
             list = new List<ProjectType>();
+            listPCA = new List<PCAResultType>();
         }
         public void AddNewProjectType(ProjectType pt)
         {
             list.Add(pt);
+        }
+        public void AddNewPCAResult(PCAResultType prt)
+        {
+            listPCA.Add(prt);
         }
         public string GetProjectName() 
         {
@@ -32,7 +38,11 @@ namespace Szakdolgozat
         }
         public List<ProjectType> GetProjectList() 
         {
-           return list;
+            return list;
+        }
+        public List<PCAResultType> GetPCAList() 
+        {
+            return listPCA;
         }
     }
 }

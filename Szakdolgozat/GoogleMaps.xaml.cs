@@ -183,6 +183,40 @@ public partial class GoogleMaps : ContentPage
     //  Browse gombra kattintva ez fut le
     private void BrowseClicked(object sender, EventArgs e)
     {
+        if (datas == null)
+        {
+            DisplayAlert("Error", "Open a Project!", "OK");
+        }
+        else
+        {
+            ImageBG.IsVisible = false;
+            BrowseIMG.IsVisible = true;
+            ButtonLayout.IsVisible = true;
+            ButtonLayout.Clear();
 
+            foreach (var item in datas.GetProjectList())
+            {
+
+                Button b = new Button
+                {
+                    Text = item.Num + ", " + item.Name,
+                    BackgroundColor = Color.Parse("AliceBlue"),
+                    TextColor = Color.Parse("Black")                   
+                };
+                b.Clicked += new EventHandler(this.ImageShowClicked);
+                ButtonLayout.Add(b);
+            }
+
+        }     
+       
     }
+
+    //  Az egyes képek megjelenítéséért felelõs gombok függvénye
+    protected void ImageShowClicked(object sender, EventArgs e)
+    {
+        Button button = sender as Button;
+        pathString = System.IO.Path.Combine(projectPathString, filename, button.Text.Substring(0,1), "01.bmp");
+        BrowseIMG.Source = pathString;
+    }
+
 }

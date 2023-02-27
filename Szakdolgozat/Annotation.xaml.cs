@@ -64,4 +64,16 @@ public partial class Annotation : ContentPage
         }
         await Navigation.PushModalAsync(new ImportExport(datas));
     }
+
+    //  Show Labels gombra kattintva ez fut le
+    private void ShowLabelsClicked(object sender, EventArgs e)
+    {
+        //  Labelek megjelenítése
+    }
+
+    //  Show Labels gombra kattintva ez fut le
+    private void RecalculateIndicesClicked(object sender, EventArgs e)
+    {
+        //  Az index számító interface meghívása
+    }
 }

@@ -133,8 +133,22 @@
             <Line X1="0" Y1="0" X2="10000" Y2="0" Stroke="Skyblue" ScaleY="3"/>
         </StackLayout>
 
-        <StackLayout Orientation="Vertical" Margin="5, 0, 5, 5">
-            <Image Source="project_background.png"></Image>
+        <StackLayout Orientation="Horizontal" Margin="5, 0, 5, 5">
+            <Image Source="project_background.png"
+                        x:Name="ImageBG"
+                        IsVisible="true">
+            </Image>
+            <Image x:Name="BrowseIMG"
+                        HeightRequest="600"
+                        WidthRequest="600"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Start"
+                        IsVisible="false"
+                        BackgroundColor="AliceBlue">
+            </Image>
+            <StackLayout Orientation="Vertical" Margin="25, 5, 5, 5" x:Name="ButtonLayout" IsVisible="false">
+                
+            </StackLayout>
         </StackLayout>
 
     </StackLayout>

@@ -75,7 +75,8 @@
                             ImageSource="earth.png"
                             ContentLayout="Top, 1"
                             BackgroundColor="AliceBlue"
-                            TextColor="Black">
+                            TextColor="Black"
+                            Clicked="ShowLabelsClicked">
                 </Button>
                 <Button Text="Recalculate&#x0a;    Indices"
                             HorizontalOptions="Start"
@@ -85,7 +86,8 @@
                             ContentLayout="Top, 1"
                             BackgroundColor="AliceBlue"
                             TextColor="Black"
-                            Margin="1">
+                            Margin="1"
+                            Clicked="RecalculateIndicesClicked">
                 </Button>
 
             </StackLayout>

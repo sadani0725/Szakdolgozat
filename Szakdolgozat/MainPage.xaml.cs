@@ -261,6 +261,19 @@ public partial class MainPage : ContentPage
                     s += item.Num + ";" + item.Latitude + ";" + item.Longitude + ";" + item.Name + ";" + item.Size + ";" + item.Zoom + "\n";
                 }
                 entryArea.Text = s;
+
+                pathString = System.IO.Path.Combine(projectPathString, filename, "pcaResult.csv");
+
+                if (System.IO.File.Exists(pathString))
+                {
+                    lines = System.IO.File.ReadAllLines(pathString);                   
+                    foreach (string line in lines)
+                    {
+                        string[] subs = line.Split(';');
+
+                        datas.AddNewPCAResult(new PCAResultType(Convert.ToInt32(subs[0][subs[0].Length-8].ToString()), Convert.ToInt32(subs[1].ToString()), Convert.ToInt32(subs[2].ToString()), Convert.ToInt32(subs[3].ToString()), Convert.ToDouble(subs[4].Replace('.', ',').ToString()), Convert.ToDouble(subs[5].Replace('.', ',').ToString()), Convert.ToDouble(subs[6].Replace('.', ',').ToString()), subs[7].ToString()));
+                    }
+                }
             }
 
             return result;
@@ -268,6 +281,7 @@ public partial class MainPage : ContentPage
         catch (Exception ex)
         {
             DisplayAlert("Error", "The formation of the Project file is not accteptable!", "OK");
+            DisplayAlert("Error", ex.Message, "OK");
         }
 
         return null;
@@ -298,9 +312,15 @@ public partial class MainPage : ContentPage
             {
                 pathString = System.IO.Path.Combine(projectPathString, subfile);
 
+                string s = "";
+                foreach (var item in datas.GetProjectList())
+                {
+                    s += item.Num + ";" + item.Latitude + ";" + item.Longitude + ";" + item.Name + ";" + item.Size + ";" + item.Zoom + "\n";
+                }
+
                 using (var fs = System.IO.File.CreateText(pathString))
                 {
-                    fs.Write(entryArea.Text.ToString());
+                    fs.Write(s);
                 }
                 //DisplayAlert("Success", "Project created successfully!", "OK");
 
