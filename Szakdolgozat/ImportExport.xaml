@@ -4,9 +4,10 @@
              x:Class="Szakdolgozat.ImportExport"
              Title="">
 
+
     <StackLayout>
 
-        <StackLayout Orientation="Vertical" Margin="5">
+        <StackLayout Orientation="Vertical" Margin="5" SizeChanged="OnSizeChanged">
             <Line X1="0" Y1="0" X2="10000" Y2="0" Stroke="Skyblue" ScaleY="3"/>
         </StackLayout>
 
@@ -75,7 +76,8 @@
                             ImageSource="export.png"
                             ContentLayout="Top, 1"
                             BackgroundColor="AliceBlue"
-                            TextColor="Black">
+                            TextColor="Black"
+                            Clicked="ExportClicked">
                 </Button>
                 <Button Text="&#x0a;Import"
                             HorizontalOptions="Start"
@@ -85,7 +87,8 @@
                             ContentLayout="Top, 1"
                             BackgroundColor="AliceBlue"
                             TextColor="Black"
-                            Margin="1">
+                            Margin="1"
+                            Clicked="ImportClicked">
                 </Button>
 
             </StackLayout>
@@ -96,10 +99,96 @@
             <Line X1="0" Y1="0" X2="10000" Y2="0" Stroke="Skyblue" ScaleY="3"/>
         </StackLayout>
 
-        <StackLayout Orientation="Vertical" Margin="5, 0, 5, 5">
-            <Image Source="project_background.png"></Image>
-        </StackLayout>
+        <StackLayout Orientation="Horizontal" Margin="5, 0, 5, 5" x:Name="BGLayout">
+            <Image Source="project_background.png"
+                        x:Name="ImageBG"></Image>
 
+            <StackLayout Orientation="Vertical" Margin="25, 5, 5, 5" x:Name="ExportLayout" IsVisible="false" HorizontalOptions="Start">
+
+            </StackLayout>
+
+            <StackLayout Orientation="Vertical" Margin="25, 5, 5, 5" x:Name="SelectButtonsLayout" IsVisible="false" HorizontalOptions="End">
+                <Button Text="Select All"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Start"
+                        IsEnabled="True"
+                        ContentLayout="Top, 1"
+                        BackgroundColor="AliceBlue"
+                        TextColor="Black"
+                        Margin="1"
+                        Clicked="SelectAllClicked"
+                        x:Name="SelectAllButton"
+                        WidthRequest="160">
+                </Button>
+                <Button Text="Select None"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Start"
+                        IsEnabled="True"
+                        ContentLayout="Top, 1"
+                        BackgroundColor="AliceBlue"
+                        TextColor="Black"
+                        Margin="1"
+                        Clicked="SelectNoneClicked"
+                        x:Name="SelectNoneButton"
+                        WidthRequest="160">
+                </Button>
+                <Button Text="            Export&#x0a; Selected Locations"
+                        HorizontalOptions="Center"
+                        VerticalOptions="End"
+                        IsEnabled="True"
+                        ContentLayout="Top, 1"
+                        BackgroundColor="AliceBlue"
+                        TextColor="Black"
+                        Margin="1"
+                        Clicked="ExportSelectedLocationsClicked"
+                        x:Name="ExportSelectedLocationButton"
+                        WidthRequest="160">
+                </Button>
+
+                <StackLayout Orientation="Vertical" Margin="25, 5, 5, 5" x:Name="ExportFinalLayout" IsVisible="false" VerticalOptions="End" HorizontalOptions="Center">
+
+                    <Entry x:Name="GetSaveName"
+                                        HeightRequest="10"
+                                        WidthRequest="160"
+                                        Margin="10"
+                                        Placeholder = "Enter filename">
+                    </Entry>
+
+                    <StackLayout Orientation="Horizontal" Margin="5, 5, 5, 5" VerticalOptions="End" HorizontalOptions="Center">
+
+                        <Button Text="Save"
+                                        HorizontalOptions="Start"
+                                        VerticalOptions="Start"
+                                        IsEnabled="True"
+                                        ContentLayout="Top, 1"
+                                        BackgroundColor="AliceBlue"
+                                        TextColor="Black"
+                                        Margin="1"
+                                        Clicked="SaveExportClicked"
+                                        x:Name="SaveExportButton"
+                                        WidthRequest="80">
+                        </Button>
+                        <Button Text="Back"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="Start"
+                                    IsEnabled="True"
+                                    ContentLayout="Top, 1"
+                                    BackgroundColor="AliceBlue"
+                                    TextColor="Black"
+                                    Margin="1"
+                                    Clicked="BackExportClicked"
+                                    x:Name="BaclExportButton"
+                                    WidthRequest="80">
+                        </Button>
+
+                    </StackLayout>
+
+                </StackLayout>
+
+            </StackLayout>
+
+        </StackLayout>
+        
     </StackLayout>
-    
+
 </ContentPage>

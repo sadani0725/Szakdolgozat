@@ -11,13 +11,34 @@ public partial class MainPage : ContentPage
     string subfile;     //  Projekt neve kiterjesztéssel
     string pathString;  //  Elérési útvonal
     string projectPathString = System.IO.Path.Combine(@"c:\UrbanizationProjects", "Projects");      //  Alapértelmezett mentési hely Windows rendszereken (C: meghajtó)
+    string exportedProjectsPathString = System.IO.Path.Combine(@"c:\UrbanizationProjects", "Exported Projects"); //  Alapértelmezett mentési hely Windows rendszereken (C: meghajtó)
+    string apikeyPathString = System.IO.Path.Combine(@"c:\UrbanizationProjects", "ApiKey");         //  Alapértelmezett ApiKey hely Windows rendszereken (C: meghajtó)
     ProjectList datas;  //  Projekt adatait tárolja (Név, Elérési út, Adatok)
 
     //  Inicializálás
     public MainPage()
 	{
-		InitializeComponent();	
-	}
+		InitializeComponent();
+
+        if (!System.IO.Directory.Exists(projectPathString))
+        {
+            System.IO.Directory.CreateDirectory(pathString);
+        }
+
+        if (!System.IO.Directory.Exists(exportedProjectsPathString))
+        {
+            System.IO.Directory.CreateDirectory(exportedProjectsPathString);
+        }
+
+        if (!System.IO.Directory.Exists(apikeyPathString))
+        {
+            System.IO.Directory.CreateDirectory(apikeyPathString);
+            using (var fs = System.IO.File.CreateText(pathString))
+            {
+
+            }
+        }
+    }
 
     //  Inicializálás adatfogadással
     public MainPage(ProjectList _datas)
