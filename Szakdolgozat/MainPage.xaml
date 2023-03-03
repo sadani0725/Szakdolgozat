@@ -189,7 +189,6 @@
             <Entry Text="" 
                    Margin="67, 24, 0, 0" 
                    IsEnabled="False"
-                   WidthRequest="1000"
                    x:Name="entryProjectPath">
             </Entry>
 
@@ -203,64 +202,69 @@
 
         <StackLayout Orientation="Horizontal" x:Name="layoutTextAttributes" IsVisible="false">
 
-            <Label Text="Name: " 
-                   Margin="50, 7, 0, 0">
-            </Label>
-            <Label Text="Latitude: " 
-                   Margin="200, 7, 0, 0">
-            </Label>
-            <Label Text="Longitude: " 
-                   Margin="200, 7, 0, 0">
-            </Label>
-            <Label Text="Area size (meter): " 
-                   Margin="200, 7, 0, 0">
-            </Label>
-            <Label Text="Zoom (m/px): " 
-                   Margin="200, 7, 0, 0">
-            </Label>
-
-        </StackLayout>
-
-        <StackLayout Orientation="Horizontal" x:Name="layoutEntryAttributes" IsVisible="false">
-
-            <Entry Text="" 
-                   Margin="50, 10, 0, 0"
-                   WidthRequest="200"
+            <StackLayout Orientation="Vertical" x:Name="NameLayout">
+                
+                <Label Text="Name: " 
+                   x:Name="NameLabel">
+                </Label>
+                <Entry Text="" 
                    x:Name="LocationName">
-            </Entry>
-            <Entry Text="" 
-                   Margin="40, 10, 0, 0"
-                   WidthRequest="200"
+                </Entry>
+                
+            </StackLayout>
+
+            <StackLayout Orientation="Vertical" x:Name="LatitLayout">
+
+                <Label Text="Latitude: " 
+                   x:Name="LatitudeLabel">
+                </Label>
+                <Entry Text="" 
                    x:Name="LatitudeName">
-            </Entry>
-            <Entry Text="" 
-                   Margin="60, 10, 0, 0"
-                   WidthRequest="200"
+                </Entry>
+
+            </StackLayout>
+
+            <StackLayout Orientation="Vertical" x:Name="LongitLayout">
+
+                <Label Text="Longitude: " 
+                   x:Name="LongitudeLabel">
+                </Label>
+                <Entry Text="" 
                    x:Name="LongitudeName">
-            </Entry>
-            <Entry Text="" 
-                   Margin="70, 10, 0, 0"
-                   WidthRequest="200"
+                </Entry>
+
+            </StackLayout>
+
+            <StackLayout Orientation="Vertical" x:Name="AreaSizeLayout">
+
+                <Label Text="Area size (meter): " 
+                   x:Name="AreaSizeLabel">
+                </Label>
+                <Entry Text="" 
                    x:Name="AreaSize">
-            </Entry>
-            <Entry Text="" 
-                   Margin="115, 10, 0, 0"
-                   WidthRequest="200"
+                </Entry>
+
+            </StackLayout>
+
+            <StackLayout Orientation="Vertical" x:Name="ZoomLayout">
+
+                <Label Text="Zoom (m/px): " 
+                   x:Name="ZoomLabel">
+                </Label>
+                <Entry Text="" 
                    x:Name="Zoom">
-            </Entry>
+                </Entry>
+
+            </StackLayout>
 
         </StackLayout>
 
         <StackLayout Orientation="Horizontal" x:Name="layoutEntryArea" IsVisible="false">
+            
             <ScrollView>
-                <Label WidthRequest="1200" 
-                       Margin="50"
-                       HeightRequest="250"
-                       VerticalTextAlignment="Start"
-                       IsEnabled="False"
-                       x:Name="entryArea"
-                       BackgroundColor="AliceBlue">
-                </Label>
+                <StackLayout Orientation="Vertical" x:Name="EntryArea" Margin="40, 30, 0, 0">
+                    
+                </StackLayout>
             </ScrollView>
 
             <StackLayout Orientation="Vertical">
@@ -278,21 +282,23 @@
                         WidthRequest="200"
                         BackgroundColor="AliceBlue"
                         TextColor="Black"
-                        x:Name="ConvertAngleBTN">
+                        x:Name="ConvertAngleBTN"
+                        Clicked="ConvertAngleClicked">
                 </Button>
                 <Button Text="Remove Selected Location"
-                        Margin="-10, 77, 0, 0"
                         WidthRequest="200"
                         BackgroundColor="AliceBlue"
                         TextColor="Black"
-                        x:Name="RemoveSelectedLocation">
+                        x:Name="RemoveSelectedLocation"
+                        Clicked="RemoveSelectedLocationClicked">
                 </Button>
                 <Button Text="Remove All Location"
                         Margin="-10, 5, 0, 0"
                         WidthRequest="200"
                         BackgroundColor="AliceBlue"
                         TextColor="Black"
-                        x:Name="RemoveAllLocation">
+                        x:Name="RemoveAllLocation"
+                        Clicked="RemoveAllLocationsClicked">
                 </Button>
 
             </StackLayout>

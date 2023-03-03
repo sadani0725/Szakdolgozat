@@ -18,6 +18,7 @@ public partial class GoogleMaps : ContentPage
     public GoogleMaps()
 	{        
         InitializeComponent();
+        MakeResponisve();
     }
 
     //  Inicializálás adatfogadással
@@ -31,6 +32,14 @@ public partial class GoogleMaps : ContentPage
             subfile = _datas.GetProjectName();
             pathString = _datas.GetPathString();
         }
+        MakeResponisve();
+    }
+
+    //  FrontEnd értékéket módosít
+    public void MakeResponisve()
+    {
+        BrowseIMG.HeightRequest = Application.Current.MainPage.Width / 2.5;
+        BrowseIMG.WidthRequest = Application.Current.MainPage.Width / 2.5;
     }
 
     //  Menüben a Project gombra kattintáskor ez fut le

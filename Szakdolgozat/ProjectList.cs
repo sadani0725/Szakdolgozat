@@ -44,5 +44,13 @@ namespace Szakdolgozat
         {
             return listPCA;
         }
+        public void ClearProjectList()
+        {
+            list.Clear();
+        }
+        public void RemoveFromProjectList(ProjectType pt)
+        {
+            list.Remove(pt);
+        }
     }
 }

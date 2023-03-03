@@ -13,7 +13,9 @@ public partial class UrbanizationScore : ContentPage
     public UrbanizationScore()
 	{
 		InitializeComponent();
-	}
+        MakeResponisve();
+
+    }
 
     //  Inicializálás adatfogadással
     public UrbanizationScore(ProjectList _datas)
@@ -26,6 +28,14 @@ public partial class UrbanizationScore : ContentPage
             subfile = _datas.GetProjectName();
             pathString = _datas.GetPathString();
         }
+        MakeResponisve();
+    }
+
+    //  FrontEnd értékéket módosít
+    public void MakeResponisve()
+    {
+        BrowseIMG.HeightRequest = Application.Current.MainPage.Width / 2.5;
+        BrowseIMG.WidthRequest = Application.Current.MainPage.Width / 2.5;
     }
 
     //  Menüben a Project gombra kattintáskor ez fut le

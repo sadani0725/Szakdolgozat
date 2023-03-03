@@ -10,13 +10,13 @@ namespace Szakdolgozat
     public class ProjectType
     {
         public int Num { get; set; }
-        public int Latitude { set; get; }
-        public int Longitude { set; get; }
+        public double Latitude { set; get; }
+        public double Longitude { set; get; }
         public string Name { set; get; }
-        public int Size { set; get; }
-        public int Zoom { set; get; }
+        public double Size { set; get; }
+        public double Zoom { set; get; }
 
-        public ProjectType(int _Num, int _Latitude, int _Longitude, string _Name, int _Size, int _Zoom)
+        public ProjectType(int _Num, double _Latitude, double _Longitude, string _Name, double _Size,double _Zoom)
         {
             Num = _Num;
             Latitude = _Latitude;
