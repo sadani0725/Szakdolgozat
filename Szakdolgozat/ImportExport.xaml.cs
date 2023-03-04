@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.IO.Compression;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using System.Xml.Serialization;
 
 namespace Szakdolgozat;
 
@@ -15,12 +16,13 @@ public partial class ImportExport : ContentPage
     string exportedProjectsPathString = System.IO.Path.Combine(@"c:\UrbanizationProjects", "Exported Projects"); //  Alapértelmezett mentési hely Windows rendszereken (C: meghajtó)
     ProjectList datas;  //  Projekt adatait tárolja (Név, Elérési út, Adatok)
     List<KeyValuePair<CheckBox, int>> ExportList;     //  Hozzárendeli a CheckBoxokat a melletük lévõ hely számához
+    List<KeyValuePair<CheckBox, int>> ImportList;     //  Hozzárendeli a CheckBoxokat a melletük lévõ hely számához
 
     //  Inicializálás
     public ImportExport()
-	{
-		InitializeComponent();
-	}
+    {
+        InitializeComponent();
+    }
 
     //  Inicializálás adatfogadással
     public ImportExport(ProjectList _datas)
@@ -32,7 +34,7 @@ public partial class ImportExport : ContentPage
             filename = _datas.GetProjectName().Remove(_datas.GetProjectName().Length - 4);
             subfile = _datas.GetProjectName();
             pathString = _datas.GetPathString();
-        }     
+        }
     }
 
     //  Menüben a Project gombra kattintáskor ez fut le
@@ -112,19 +114,19 @@ public partial class ImportExport : ContentPage
                     if (item2.Name == item.Name)
                     {
                         PCA = Convert.ToDouble(item2.PCAValue);
-                    }                   
+                    }
                 }
 
                 StackLayout s = new StackLayout
                 {
                     Orientation = StackOrientation.Horizontal,
-                    Margin = 5,                 
+                    Margin = 5,
                 };
-              
+
                 Label l = new Label
                 {
                     Text = item.Name + ": " + PCA.ToString() + "(Lat: " + item.Latitude + ", Lng: " + item.Longitude + ")",
-                    Margin= 5
+                    Margin = 5
                 };
 
                 CheckBox cb = new CheckBox
@@ -139,7 +141,7 @@ public partial class ImportExport : ContentPage
             }
 
         }
-    }   
+    }
 
     //  Select All gombra kattintva ez fut le
     private void SelectAllClicked(object sender, EventArgs e)
@@ -172,63 +174,105 @@ public partial class ImportExport : ContentPage
     //  Export Selected Locations gombra kattintva ez fut le
     private void SaveExportClicked(object sender, EventArgs e)
     {
-        if (!System.IO.Directory.Exists(exportedProjectsPathString))
+        int count = 0;
+        foreach (var item in ExportList)
         {
-            System.IO.Directory.CreateDirectory(exportedProjectsPathString);
+            if (item.Key.IsChecked)
+            {
+                count++;
+            }
         }
-
-        pathString = System.IO.Path.Combine(exportedProjectsPathString, GetSaveName.Text.ToString());
-        
-
-        if (System.IO.File.Exists(pathString))
+        if (count == 0)
         {
-            DisplayAlert("Error", "File " + GetSaveName.Text.ToString() + " already exists.", "OK");
+            DisplayAlert("Error", "Pick a Location first!", "OK");
         }
         else
         {
-            System.IO.Directory.CreateDirectory(pathString);
-            pathString = System.IO.Path.Combine(exportedProjectsPathString, GetSaveName.Text.ToString(), GetSaveName.Text.ToString(), "/");
-            System.IO.Directory.CreateDirectory(pathString);
-            subfile = GetSaveName.Text.ToString() + ".csv";
-            pathString = System.IO.Path.Combine(exportedProjectsPathString, GetSaveName.Text.ToString(), subfile);
-
-            string s = "";
-
-            foreach (var item in ExportList)
+            if (!System.IO.Directory.Exists(exportedProjectsPathString))
             {
-                if (item.Key.IsChecked == true)
-                {                   
-                    foreach (var item2 in datas.GetProjectList())
+                System.IO.Directory.CreateDirectory(exportedProjectsPathString);
+            }
+
+            pathString = System.IO.Path.Combine(exportedProjectsPathString, GetSaveName.Text.ToString());
+
+
+            if (System.IO.File.Exists(pathString))
+            {
+                DisplayAlert("Error", "File " + GetSaveName.Text.ToString() + " already exists.", "OK");
+            }
+            else
+            {
+                System.IO.Directory.CreateDirectory(pathString);
+                pathString = System.IO.Path.Combine(exportedProjectsPathString, GetSaveName.Text.ToString(), GetSaveName.Text.ToString(), "/");
+                System.IO.Directory.CreateDirectory(pathString);
+                subfile = GetSaveName.Text.ToString() + ".csv";
+                pathString = System.IO.Path.Combine(exportedProjectsPathString, GetSaveName.Text.ToString(), subfile);
+
+                string s = "";
+
+                foreach (var item in ExportList)
+                {
+                    if (item.Key.IsChecked == true)
                     {
-                        if (item2.Num == item.Value)
+                        foreach (var item2 in datas.GetProjectList())
                         {
-                            s += item2.Num + ";" + item2.Latitude + ";" + item2.Longitude + ";" + item2.Name + ";" + item2.Size + ";" + item2.Zoom + "\n";
+                            if (item2.Num == item.Value)
+                            {
+                                s += item2.Num + ";" + item2.Latitude + ";" + item2.Longitude + ";" + item2.Name + ";" + item2.Size + ";" + item2.Zoom + "\n";
 
-                            string from = System.IO.Path.Combine(projectPathString, datas.GetProjectName().Remove(datas.GetProjectName().Length - 4), item2.Num.ToString());
-                            string to = System.IO.Path.Combine(exportedProjectsPathString, GetSaveName.Text.ToString(), GetSaveName.Text.ToString(), item2.Num.ToString());
+                                string from = System.IO.Path.Combine(projectPathString, datas.GetProjectName().Remove(datas.GetProjectName().Length - 4), item2.Num.ToString());
+                                string to = System.IO.Path.Combine(exportedProjectsPathString, GetSaveName.Text.ToString(), GetSaveName.Text.ToString(), item2.Num.ToString());
 
-                            Copy(from, to);
-                        }                      
+                                Copy(from, to);
+                            }
+                        }
+
+                        using (var fs = System.IO.File.CreateText(pathString))
+                        {
+                            fs.Write(s);
+                        }
+
                     }
+                }
+                ZipFile.CreateFromDirectory(System.IO.Path.Combine(exportedProjectsPathString, GetSaveName.Text.ToString()), System.IO.Path.Combine(exportedProjectsPathString, GetSaveName.Text.ToString() + ".zip"));
 
-                    using (var fs = System.IO.File.CreateText(pathString))
+                foreach (var item in System.IO.Directory.GetDirectories(System.IO.Path.Combine(exportedProjectsPathString, GetSaveName.Text.ToString())))
+                {
+                    foreach (var item2 in System.IO.Directory.GetDirectories(item))
                     {
-                        fs.Write(s);
+                        foreach (var item3 in System.IO.Directory.GetDirectories(item2))
+                        {
+                            System.IO.Directory.Delete(item3);
+                        }
+                        foreach (var item3 in System.IO.Directory.GetFiles(item2))
+                        {
+                            System.IO.File.Delete(item3);
+                        }
+                        System.IO.Directory.Delete(item2);
                     }
-                  
+                    foreach (var item2 in System.IO.Directory.GetFiles(item))
+                    {
+                        System.IO.File.Delete(item2);
+                    }
+                    System.IO.Directory.Delete(item);
+                }
+                foreach (var item in System.IO.Directory.GetFiles(System.IO.Path.Combine(exportedProjectsPathString, GetSaveName.Text.ToString())))
+                {
+                    System.IO.File.Delete(item);
+                }
+                System.IO.Directory.Delete(System.IO.Path.Combine(exportedProjectsPathString, GetSaveName.Text.ToString()));
+
+                ExportLayout.WidthRequest = Application.Current.MainPage.Width - Application.Current.MainPage.Height + 90;
+                ExportSelectedLocationButton.Margin = Application.Current.MainPage.Height - 350;
+                ExportSelectedLocationButton.IsVisible = true;
+                ExportFinalLayout.IsVisible = false;
+
+                foreach (var item in ExportList)
+                {
+                    item.Key.IsChecked = false;
                 }
             }
-            ExportLayout.WidthRequest = Application.Current.MainPage.Width - Application.Current.MainPage.Height + 90;
-            ExportSelectedLocationButton.Margin = Application.Current.MainPage.Height - 350;
-            ExportSelectedLocationButton.IsVisible = true;
-            ExportFinalLayout.IsVisible = false;
-
-            foreach (var item in ExportList)
-            {
-                item.Key.IsChecked = false;
-            }
-        }
-        
+        }      
     }
 
     // A Save Export kisegítõ függvénye
@@ -270,6 +314,120 @@ public partial class ImportExport : ContentPage
 
     //  Export gombra kattintva ez fut le
     private void ImportClicked(object sender, EventArgs e)
+    {
+        var customFileType = new FilePickerFileType(
+                new Dictionary<DevicePlatform, IEnumerable<string>>
+                {
+                    { DevicePlatform.WinUI, new[] { ".zip" } }
+                });
+
+        PickOptions options = new()
+        {
+            PickerTitle = "Please select a comic file",
+            FileTypes = customFileType,
+        };
+
+        var result = PickAndShow(options);
+    }
+
+    // Az Open Project kisegítõ függvénye
+    public async Task<FileResult> PickAndShow(PickOptions options)
+    {
+        try
+        {
+            var result = await FilePicker.Default.PickAsync(options);
+
+            if (result != null)
+            {
+                ImportLayout.WidthRequest = Application.Current.MainPage.Width - Application.Current.MainPage.Height + 90;
+                ImportSelectedLocationButton.Margin = Application.Current.MainPage.Height - 350;
+                ImageBG.IsVisible = false;
+                ImportLayout.IsVisible = true;
+                ImportLayout.Clear();
+                SelectButtons2Layout.IsVisible = true;
+
+                ImportList = new List<KeyValuePair<CheckBox, int>>();
+
+                pathString = result.FullPath.ToString();
+                filename = result.FileName.Remove(result.FileName.Length - 4);
+                subfile = result.FileName;
+
+                string path = @"" + Path.Combine(result.FullPath.ToString());
+
+                using (FileStream file = File.OpenRead(path))
+                {
+                    using (ZipArchive zip = new ZipArchive(file, ZipArchiveMode.Read))
+                    {
+                        foreach (ZipArchiveEntry entry in zip.Entries)
+                        {
+                            if (entry.Name == filename + ".csv")
+                            {
+                                using (StreamReader sr = new StreamReader(entry.Open()))
+                                {
+                                    List<string> lines = new List<string>();
+
+                                    while (!sr.EndOfStream)
+                                    {
+                                        lines.Add(sr.ReadLine());
+                                    }
+
+                                    foreach (string line in lines)
+                                    {
+                                        string[] subs = line.Split(';');
+
+                                        StackLayout s = new StackLayout
+                                        {
+                                            Orientation = StackOrientation.Horizontal,
+                                            Margin = 5,
+                                        };
+
+                                        Label l = new Label
+                                        {
+                                            Text = subs[0] + ";" + subs[1] + ";" + subs[2] + ";" + subs[3] + ";" + subs[4] + ";" + subs[5],
+                                            Margin = 5
+                                        };
+
+                                        CheckBox cb = new CheckBox
+                                        {
+                                            BackgroundColor = Color.Parse("AliceBlue"),
+                                            Color = Color.Parse("Skyblue"),
+                                        };
+                                        s.Add(cb);
+                                        s.Add(l);
+                                        ImportLayout.Add(s);
+                                        ImportList.Add(new KeyValuePair<CheckBox, int>(cb, Convert.ToInt32(subs[0])));
+
+                                    }
+                                }
+                            }                            
+                        }
+                    }
+                }                        
+            }
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            DisplayAlert("Error", "The formation of the Imorted file is not accteptable!", "OK");
+        }
+        return null;
+    }
+
+    //  Select All gombra kattintva ez fut le
+    private void SelectAll2Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    //  Select None gombra kattintva ez fut le
+    private void SelectNone2Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    //  Import Selected Location gombra kattintva ez fut le
+    private void ImportSelectedLocationsClicked(object sender, EventArgs e)
     {
 
     }

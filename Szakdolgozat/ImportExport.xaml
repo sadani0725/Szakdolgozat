@@ -177,13 +177,57 @@
                                     TextColor="Black"
                                     Margin="1"
                                     Clicked="BackExportClicked"
-                                    x:Name="BaclExportButton"
+                                    x:Name="BackExportButton"
                                     WidthRequest="80">
                         </Button>
 
                     </StackLayout>
 
                 </StackLayout>
+
+            </StackLayout>
+
+            <StackLayout Orientation="Vertical" Margin="25, 5, 5, 5" x:Name="ImportLayout" IsVisible="false" HorizontalOptions="Start">
+
+            </StackLayout>
+
+            <StackLayout Orientation="Vertical" Margin="25, 5, 5, 5" x:Name="SelectButtons2Layout" IsVisible="false" HorizontalOptions="End">
+                <Button Text="Select All"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Start"
+                        IsEnabled="True"
+                        ContentLayout="Top, 1"
+                        BackgroundColor="AliceBlue"
+                        TextColor="Black"
+                        Margin="1"
+                        Clicked="SelectAll2Clicked"
+                        x:Name="SelectAll2Button"
+                        WidthRequest="160">
+                </Button>
+                <Button Text="Select None"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Start"
+                        IsEnabled="True"
+                        ContentLayout="Top, 1"
+                        BackgroundColor="AliceBlue"
+                        TextColor="Black"
+                        Margin="1"
+                        Clicked="SelectNone2Clicked"
+                        x:Name="SelectNone2Button"
+                        WidthRequest="160">
+                </Button>
+                <Button Text="            Import&#x0a; Selected Locations"
+                        HorizontalOptions="Center"
+                        VerticalOptions="End"
+                        IsEnabled="True"
+                        ContentLayout="Top, 1"
+                        BackgroundColor="AliceBlue"
+                        TextColor="Black"
+                        Margin="1"
+                        Clicked="ImportSelectedLocationsClicked"
+                        x:Name="ImportSelectedLocationButton"
+                        WidthRequest="160">
+                </Button>
 
             </StackLayout>
 
