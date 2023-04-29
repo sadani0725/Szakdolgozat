@@ -149,6 +149,72 @@
             <StackLayout Orientation="Vertical" Margin="25, 5, 5, 5" x:Name="ButtonLayout" IsVisible="false">
                 
             </StackLayout>
+            
+            <StackLayout Orientation="Vertical" Margin="25, 25, 5, 5" x:Name="DownloadLayout" IsVisible="false">
+                
+                <StackLayout Orientation="Horizontal" Margin="25, 5, 5, 5">
+                    <Label Text="Number of pictures to be downloaded:" FontSize="Title">
+
+                    </Label>
+                    <Label FontSize="Title" x:Name="PicNumLabel" Margin="5, 0, 0, 0">
+
+                    </Label>
+                    <Button Text="Start Downloading"
+                            BackgroundColor="AliceBlue"
+                            TextColor="Black"
+                            HeightRequest="50"
+                            Clicked="StartDownloadingClicked"
+                            WidthRequest="250"
+                            FontSize="Subtitle"
+                            Margin="50, 0, 0, 0"
+                            VerticalOptions="Start">
+                    </Button>
+                    <StackLayout Orientation="Vertical" Margin="300, 5, 5, 5" x:Name="DownloadListLayout">
+
+                    </StackLayout>
+                </StackLayout>
+
+                
+
+                <Label Text="Proxy Settings" FontSize="Title" Margin="25, 350, 0, 0">
+
+                </Label>
+
+                <StackLayout Orientation="Horizontal" Margin="25, 15, 5, 5">
+                    <CheckBox x:Name="UseProxyCheckBox" Color="SkyBlue" BackgroundColor="AliceBlue" VerticalOptions="Center" Margin="-5, 0, 0, 0">
+                        
+                    </CheckBox>
+                    <Label Text="Use Proxy Settings" FontSize="17" VerticalOptions="Center">
+
+                    </Label>
+                    <Button Text="Set"
+                            BackgroundColor="AliceBlue"
+                            TextColor="Black"
+                            HeightRequest="40"
+                            Clicked="SetClicked"
+                            WidthRequest="70"
+                            FontSize="17"
+                            Margin="125, 0, 0, 0">
+                    </Button>
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal" Margin="25, 35, 5, 5">
+                    <Label Text="Address:" FontSize="17" VerticalOptions="Center">
+
+                    </Label>
+                    <Entry Margin="5, 0, 40, 0" WidthRequest="150" x:Name="addressEntry">
+                        
+                    </Entry>
+                    <Label Text="Port:" FontSize="17" VerticalOptions="Center">
+
+                    </Label>
+                    <Entry Margin="5, 0, 40, 0" x:Name="portEntry">
+
+                    </Entry>
+                </StackLayout>
+
+            </StackLayout>
+            
         </StackLayout>
 
     </StackLayout>

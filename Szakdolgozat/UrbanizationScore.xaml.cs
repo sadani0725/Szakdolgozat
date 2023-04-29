@@ -6,7 +6,7 @@ public partial class UrbanizationScore : ContentPage
     string filename;    //  Projekt neve kiterjesztés nélkül
     string subfile;     //  Projekt neve kiterjesztéssel
     string pathString;  //  Elérési útvonal
-    string projectPathString = System.IO.Path.Combine(@"c:\UrbanizationProjects", "Projects");      //  Alapértelmezett mentési hely Windows rendszereken (C: meghajtó)
+    static string projectPathString = System.IO.Path.Combine(@"c:\UrbanizationProjects", "Projects");      //  Alapértelmezett mentési hely Windows rendszereken (C: meghajtó)
     ProjectList datas;  //  Projekt adatait tárolja (Név, Elérési út, Adatok)
 
     //  Inicializálás
@@ -123,7 +123,7 @@ public partial class UrbanizationScore : ContentPage
 
                     Button b = new Button
                     {
-                        Text = item.Num + ", " + item.PCAValue + ", " + item.Name,
+                        Text = item.Num + "; " + item.PCAValue + "; " + item.Name,
                         BackgroundColor = Color.Parse("AliceBlue"),
                         TextColor = Color.Parse("Black")
                     };
@@ -131,7 +131,7 @@ public partial class UrbanizationScore : ContentPage
                     ButtonList.Add(b);
                 }
 
-                List<Button> SortedButtonList = ButtonList.OrderBy(o => Convert.ToDouble(o.Text.Split(',')[1])).ToList();
+                List<Button> SortedButtonList = ButtonList.OrderBy(o => Convert.ToDouble(o.Text.Split(';')[1])).ToList();
 
                 foreach (var item in SortedButtonList)
                 {

@@ -86,7 +86,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="Accord" Version="3.8.0" />
+	  <PackageReference Include="Accord.Statistics" Version="3.8.0" />
 	  <PackageReference Include="EntityFramework" Version="6.4.4" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="PresentationCore">
+	    <HintPath>bin\Debug\net6.0-windows10.0.19041.0\win10-x64\PresentationCore.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -97,6 +105,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="ImportExport.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Labels.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="UrbanizationScore.xaml">

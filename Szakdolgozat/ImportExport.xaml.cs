@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.IO.Compression;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace Szakdolgozat;
@@ -12,11 +13,13 @@ public partial class ImportExport : ContentPage
     string filename;    //  Projekt neve kiterjesztés nélkül
     string subfile;     //  Projekt neve kiterjesztéssel
     string pathString;  //  Elérési útvonal
+    string importName;   //  Import neve
+    string importPath;  //  Import elérési útvonala
     string projectPathString = System.IO.Path.Combine(@"c:\UrbanizationProjects", "Projects");      //  Alapértelmezett mentési hely Windows rendszereken (C: meghajtó)
     string exportedProjectsPathString = System.IO.Path.Combine(@"c:\UrbanizationProjects", "Exported Projects"); //  Alapértelmezett mentési hely Windows rendszereken (C: meghajtó)
     ProjectList datas;  //  Projekt adatait tárolja (Név, Elérési út, Adatok)
     List<KeyValuePair<CheckBox, int>> ExportList;     //  Hozzárendeli a CheckBoxokat a melletük lévõ hely számához
-    List<KeyValuePair<CheckBox, int>> ImportList;     //  Hozzárendeli a CheckBoxokat a melletük lévõ hely számához
+    List<KeyValuePair<CheckBox, string>> ImportList;     //  Hozzárendeli a CheckBoxokat a melletük lévõ hely számához
 
     //  Inicializálás
     public ImportExport()
@@ -96,6 +99,8 @@ public partial class ImportExport : ContentPage
         }
         else
         {
+            ImportLayout.IsVisible = false;
+            SelectButtons2Layout.IsVisible = false;
             ExportLayout.WidthRequest = Application.Current.MainPage.Width - Application.Current.MainPage.Height + 90;
             ExportSelectedLocationButton.Margin = Application.Current.MainPage.Height - 350;
             ImageBG.IsVisible = false;
@@ -220,7 +225,7 @@ public partial class ImportExport : ContentPage
                             {
                                 s += item2.Num + ";" + item2.Latitude + ";" + item2.Longitude + ";" + item2.Name + ";" + item2.Size + ";" + item2.Zoom + "\n";
 
-                                string from = System.IO.Path.Combine(projectPathString, datas.GetProjectName().Remove(datas.GetProjectName().Length - 4), item2.Num.ToString());
+                                string from = System.IO.Path.Combine(datas.GetPathString(), datas.GetProjectName().Remove(datas.GetProjectName().Length - 4), item2.Num.ToString());
                                 string to = System.IO.Path.Combine(exportedProjectsPathString, GetSaveName.Text.ToString(), GetSaveName.Text.ToString(), item2.Num.ToString());
 
                                 Copy(from, to);
@@ -315,19 +320,26 @@ public partial class ImportExport : ContentPage
     //  Export gombra kattintva ez fut le
     private void ImportClicked(object sender, EventArgs e)
     {
-        var customFileType = new FilePickerFileType(
+        if (datas == null)
+        {
+            DisplayAlert("Error", "Open a Project!", "OK");
+        }
+        else
+        {
+            var customFileType = new FilePickerFileType(
                 new Dictionary<DevicePlatform, IEnumerable<string>>
                 {
                     { DevicePlatform.WinUI, new[] { ".zip" } }
                 });
 
-        PickOptions options = new()
-        {
-            PickerTitle = "Please select a comic file",
-            FileTypes = customFileType,
-        };
+            PickOptions options = new()
+            {
+                PickerTitle = "Please select a comic file",
+                FileTypes = customFileType,
+            };
 
-        var result = PickAndShow(options);
+            var result = PickAndShow(options);
+        }       
     }
 
     // Az Open Project kisegítõ függvénye
@@ -339,6 +351,9 @@ public partial class ImportExport : ContentPage
 
             if (result != null)
             {
+                ExportLayout.IsVisible = false;
+                ExportLayout.Clear();
+                SelectButtonsLayout.IsVisible = false;
                 ImportLayout.WidthRequest = Application.Current.MainPage.Width - Application.Current.MainPage.Height + 90;
                 ImportSelectedLocationButton.Margin = Application.Current.MainPage.Height - 350;
                 ImageBG.IsVisible = false;
@@ -346,10 +361,11 @@ public partial class ImportExport : ContentPage
                 ImportLayout.Clear();
                 SelectButtons2Layout.IsVisible = true;
 
-                ImportList = new List<KeyValuePair<CheckBox, int>>();
+                ImportList = new List<KeyValuePair<CheckBox, string>>();
 
-                pathString = result.FullPath.ToString();
+                importPath = result.FullPath.ToString();
                 filename = result.FileName.Remove(result.FileName.Length - 4);
+                importName = filename;
                 subfile = result.FileName;
 
                 string path = @"" + Path.Combine(result.FullPath.ToString());
@@ -395,7 +411,7 @@ public partial class ImportExport : ContentPage
                                         s.Add(cb);
                                         s.Add(l);
                                         ImportLayout.Add(s);
-                                        ImportList.Add(new KeyValuePair<CheckBox, int>(cb, Convert.ToInt32(subs[0])));
+                                        ImportList.Add(new KeyValuePair<CheckBox, string>(cb, l.Text));
 
                                     }
                                 }
@@ -417,18 +433,94 @@ public partial class ImportExport : ContentPage
     //  Select All gombra kattintva ez fut le
     private void SelectAll2Clicked(object sender, EventArgs e)
     {
-
+        foreach (var item in ImportList)
+        {
+            item.Key.IsChecked = true;
+        }
     }
 
     //  Select None gombra kattintva ez fut le
     private void SelectNone2Clicked(object sender, EventArgs e)
     {
-
+        foreach (var item in ImportList)
+        {
+            item.Key.IsChecked = false;
+        }
     }
 
     //  Import Selected Location gombra kattintva ez fut le
     private void ImportSelectedLocationsClicked(object sender, EventArgs e)
     {
+        int max = 0;
+        foreach (var item in datas.GetProjectList())
+        {
+            if (item.Num > max)
+            {
+                max = item.Num;
+            }
+        }
 
+        string extract = Path.Combine(exportedProjectsPathString, importName);
+        System.IO.Directory.CreateDirectory(Path.Combine(exportedProjectsPathString, importName));
+        System.IO.Compression.ZipFile.ExtractToDirectory(importPath, extract);
+
+        string s = "";
+        foreach (var item in datas.GetProjectList())
+        {
+            s += item.Num + ";" + item.Latitude + ";" + item.Longitude + ";" + item.Name + ";" + item.Size + ";" + item.Zoom + "\n";
+        }
+
+        foreach (var item in ImportList)
+        {
+            if (item.Key.IsChecked)
+            {
+                max++;
+                s += max + item.Value.Remove(0, 1) + "\n";
+                string[] subs = item.Value.Remove(0,2).Split(';');
+
+                datas.AddNewProjectType(new ProjectType(max, Convert.ToDouble(subs[0].Replace('.',',')), Convert.ToDouble(subs[1].Replace('.', ',')), subs[2], Convert.ToDouble(subs[3].Replace('.', ',')), Convert.ToDouble(subs[4].Replace('.', ','))));
+
+                string from = System.IO.Path.Combine(extract, importName, item.Value.ToString()[0].ToString());
+                string to = System.IO.Path.Combine(datas.GetPathString(), datas.GetProjectName().Remove(datas.GetProjectName().Length - 4), max.ToString());
+
+                Copy(from, to);
+            }
+        }
+
+        using (var fs = System.IO.File.CreateText(Path.Combine(datas.GetPathString(), datas.GetProjectName())))
+        {
+            fs.Write(s);           
+        }
+
+        foreach (var item in System.IO.Directory.GetDirectories(extract))
+        {
+            foreach (var item2 in System.IO.Directory.GetDirectories(item))
+            {
+                foreach (var item3 in System.IO.Directory.GetDirectories(item2))
+                {
+                    System.IO.Directory.Delete(item3);
+                }
+                foreach (var item3 in System.IO.Directory.GetFiles(item2))
+                {
+                    System.IO.File.Delete(item3);
+                }
+                System.IO.Directory.Delete(item2);
+            }
+            foreach (var item2 in System.IO.Directory.GetFiles(item))
+            {
+                System.IO.File.Delete(item2);
+            }
+            System.IO.Directory.Delete(item);
+        }
+        foreach (var item in System.IO.Directory.GetFiles(extract))
+        {
+            System.IO.File.Delete(item);
+        }
+        System.IO.Directory.Delete(System.IO.Path.Combine(extract));
+
+        foreach (var item in ImportList)
+        {
+            item.Key.IsChecked = false;
+        }
     }
 }

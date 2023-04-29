@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Szakdolgozat.Labels"
+             Title="Labels">
+
+    <StackLayout>
+        
+        <StackLayout Orientation="Horizontal" Margin="5, 0, 0, 0">
+
+            <StackLayout Orientation="Vertical" Margin="5">
+
+                <Picker x:Name="picker" Margin="5, 5, 5, 5" SelectedIndexChanged="PickerChanged">
+
+                </Picker>
+
+                <StackLayout Orientation="Horizontal">
+
+                    <StackLayout Orientation="Vertical" Margin="5">
+
+                        <Label Text="Building"></Label>
+
+                        <StackLayout Orientation="Vertical" Margin="0, 5, 5, 5" x:Name="BuildingLayout">
+
+                        </StackLayout>
+
+                    </StackLayout>
+                    <StackLayout Orientation="Vertical" Margin="5">
+
+                        <Label Text="Vegetation"></Label>
+
+                        <StackLayout Orientation="Vertical" Margin="0, 5, 5, 5" x:Name="VegetationLayout">
+
+                        </StackLayout>
+
+                    </StackLayout>
+                    <StackLayout Orientation="Vertical" Margin="5">
+
+                        <Label Text="Road"></Label>
+
+                        <StackLayout Orientation="Vertical" Margin="0, 5, 5, 5" x:Name="RoadLayout">
+
+                        </StackLayout>
+
+                    </StackLayout>
+
+                    <StackLayout Orientation="Vertical" Margin="5">
+
+                        <Image  x:Name="ImageSource"
+                                WidthRequest="350"
+                                HeightRequest="350"
+                                Margin="5">
+
+                        </Image>
+
+                    </StackLayout>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal" Margin="5, -30, 5, 5" HorizontalOptions="Start" VerticalOptions="Start">
+
+                    <StackLayout Orientation="Vertical" Margin="5" >
+
+                        <StackLayout Orientation="Horizontal">
+                            <RadioButton x:Name="isBuilding" GroupName="isSomething" Margin="0">
+
+                            </RadioButton>
+                            <Label Text="Buildings" Margin="-75, 10, 5, 5">
+
+                            </Label>
+                        </StackLayout>
+
+                        <StackLayout Orientation="Horizontal">
+                            <RadioButton x:Name="isVegetion" GroupName="isSomething" Margin="0">
+
+                            </RadioButton>
+                            <Label Text="Vegetation" Margin="-75, 10, 5, 5">
+
+                            </Label>
+
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <RadioButton x:Name="isRoad" GroupName="isSomething" Margin="0" CheckedChanged="IsRoadClicked">
+
+                            </RadioButton>
+                            <Label Text="Roads" Margin="-75, 10, 5, 5">
+
+                            </Label>
+                        </StackLayout>
+
+                    </StackLayout>
+
+                    <StackLayout Orientation="Vertical" Margin="100, 5, 5, 5" HorizontalOptions="Start" VerticalOptions="Start">
+
+                        <StackLayout Orientation="Horizontal">
+                            <Button x:Name="SetWhiteBTN"
+                                    WidthRequest ="35"
+                                    HeightRequest="35"
+                                    Scale="0.65"
+                                    Margin="2.2"
+                                    BackgroundColor="White"
+                                    BorderWidth="2.5"
+                                    BorderColor="Red"
+                                    Clicked="SetWhite">
+
+                            </Button>
+                            <Label Text="0 none" Margin="5, 10, 5, 5">
+
+                            </Label>
+                        </StackLayout>
+
+                        <StackLayout Orientation="Horizontal">
+                            <Button x:Name="SetGrayBTN"
+                                    WidthRequest ="35"
+                                    HeightRequest="35"
+                                    Scale="0.65"
+                                    Margin="2.2"
+                                    BackgroundColor="Gray"
+                                    BorderWidth="1"
+                                    BorderColor="Gray"
+                                    Clicked="SetGray">
+
+                            </Button>
+                            <Label Text="1 &lt;50%" Margin="5, 10, 5, 5">
+
+                            </Label>
+
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Button x:Name="SetBlackBTN"
+                                    WidthRequest ="35"
+                                    HeightRequest="35"
+                                    Scale="0.65"
+                                    Margin="2.2"
+                                    BackgroundColor="Black"
+                                    BorderWidth="1"
+                                    BorderColor="Black"
+                                    Clicked="SetBlack">
+
+                            </Button>
+                            <Label Text="2 &gt;=50%" Margin="5, 10, 5, 5">
+
+                            </Label>
+                        </StackLayout>
+
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Margin="100, 0, 5, 5" HorizontalOptions="Start" VerticalOptions="Start">
+                        
+                        <CheckBox x:Name="isEditable"
+                                    Margin="5"
+                                    BackgroundColor="AliceBlue"
+                                    Color="SkyBlue">
+
+                        </CheckBox>
+                        <Label Text="Enable Editing" Margin="0, 18, 5, 5">
+
+                        </Label>
+                        <Button Text="Save Changes"
+                                    Margin="100, 8, 5, 5"
+                                    Clicked="SaveChangesClicked"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="Start"
+                                    IsEnabled="True"
+                                    BackgroundColor="AliceBlue"
+                                    TextColor="Black">
+
+                        </Button>
+                        
+                    </StackLayout>
+
+                </StackLayout>
+
+            </StackLayout>
+
+        </StackLayout>
+              
+    </StackLayout>
+
+</ContentPage>

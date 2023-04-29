@@ -8,9 +8,9 @@ public partial class MainPage : ContentPage
     string filename;    //  Projekt neve kiterjesztés nélkül
     string subfile;     //  Projekt neve kiterjesztéssel
     string pathString;  //  Elérési útvonal
-    string projectPathString = System.IO.Path.Combine(@"c:\UrbanizationProjects", "Projects");      //  Alapértelmezett mentési hely Windows rendszereken (C: meghajtó)
-    string exportedProjectsPathString = System.IO.Path.Combine(@"c:\UrbanizationProjects", "Exported Projects"); //  Alapértelmezett mentési hely Windows rendszereken (C: meghajtó)
-    string apikeyPathString = System.IO.Path.Combine(@"c:\UrbanizationProjects", "ApiKey");         //  Alapértelmezett ApiKey hely Windows rendszereken (C: meghajtó)
+    static string projectPathString = System.IO.Path.Combine(@"c:\UrbanizationProjects", "Projects");      //  Alapértelmezett mentési hely Windows rendszereken (C: meghajtó)
+    static string exportedProjectsPathString = System.IO.Path.Combine(@"c:\UrbanizationProjects", "Exported Projects"); //  Alapértelmezett mentési hely Windows rendszereken (C: meghajtó)
+    static string apikeyPathString = System.IO.Path.Combine(@"c:\UrbanizationProjects", "ApiKey");         //  Alapértelmezett ApiKey hely Windows rendszereken (C: meghajtó)
     ProjectList datas;  //  Projekt adatait tárolja (Név, Elérési út, Adatok)
     List<KeyValuePair<CheckBox, ProjectType>> RemoveList;     //  Hozzárendeli a CheckBoxokat a melletük lévő helyhez
 
@@ -21,7 +21,7 @@ public partial class MainPage : ContentPage
 
         if (!System.IO.Directory.Exists(projectPathString))
         {
-            System.IO.Directory.CreateDirectory(pathString);
+            System.IO.Directory.CreateDirectory(projectPathString);
         }
 
         if (!System.IO.Directory.Exists(exportedProjectsPathString))
@@ -32,7 +32,7 @@ public partial class MainPage : ContentPage
         if (!System.IO.Directory.Exists(apikeyPathString))
         {
             System.IO.Directory.CreateDirectory(apikeyPathString);
-            using (var fs = System.IO.File.CreateText(pathString))
+            using (var fs = System.IO.File.CreateText(Path.Combine(apikeyPathString, "apikey.txt")))
             {
 
             }
@@ -186,10 +186,15 @@ public partial class MainPage : ContentPage
                 backBTN.IsVisible = false;
                 getFilename.Text = "";
 
+                pathString = System.IO.Path.Combine(projectPathString);
+                datas = new ProjectList(subfile, pathString);
+
                 entryProjectName.Text = filename;
                 entryProjectPath.Text = datas.GetPathString();
 
-                datas = new ProjectList(subfile, pathString);
+                MakeResponsive();
+                ShowEntryArea();
+                
             }
             else
             {
@@ -206,7 +211,7 @@ public partial class MainPage : ContentPage
     //  Add Location gombra kattintva ez fut le
     private void AddLocationClicked(object sender, EventArgs e) 
     {
-        int max = 1;
+        int max = 0;
         foreach (var item in datas.GetProjectList())
         {
             if (item.Num > max)
@@ -339,8 +344,14 @@ public partial class MainPage : ContentPage
                     foreach (string line in lines)
                     {
                         string[] subs = line.Split(';');
+                        if (subs[0] == "Picture_name")
+                        {
 
-                        datas.AddNewPCAResult(new PCAResultType(Convert.ToInt32(subs[0][subs[0].Length-8].ToString()), Convert.ToInt32(subs[1].ToString()), Convert.ToInt32(subs[2].ToString()), Convert.ToInt32(subs[3].ToString()), Convert.ToDouble(subs[4].Replace('.', ',').ToString()), Convert.ToDouble(subs[5].Replace('.', ',').ToString()), Convert.ToDouble(subs[6].Replace('.', ',').ToString()), subs[7].ToString()));
+                        }
+                        else
+                        {
+                            datas.AddNewPCAResult(new PCAResultType(Convert.ToInt32(subs[0][subs[0].Length - 8].ToString()), subs[0].ToString(), Convert.ToInt32(subs[1].ToString()), Convert.ToInt32(subs[2].ToString()), Convert.ToInt32(subs[3].ToString()), Convert.ToDouble(subs[4].Replace('.', ',').ToString()), Convert.ToDouble(subs[5].Replace('.', ',').ToString()), Convert.ToDouble(subs[6].Replace('.', ',').ToString()), subs[7].ToString()));
+                        }
                     }
                 }
             }
@@ -377,7 +388,7 @@ public partial class MainPage : ContentPage
         {
             if (datas != null)
             {
-                pathString = System.IO.Path.Combine(projectPathString, subfile);
+                pathString = System.IO.Path.Combine(datas.GetPathString(), subfile);
 
                 string s = "";
                 foreach (var item in datas.GetProjectList())
@@ -466,6 +477,7 @@ public partial class MainPage : ContentPage
 
     }
 
+    //  Megjeleníti a Project Settings-ben a területi adatokat
     public void ShowEntryArea()
     {
         EntryArea.Clear();

@@ -9,9 +9,12 @@ public partial class GoogleMaps : ContentPage
     string filename;    //  Projekt neve kiterjesztés nélkül
     string subfile;     //  Projekt neve kiterjesztéssel
     string pathString;  //  Elérési útvonal
-    string apikeyPathString = System.IO.Path.Combine(@"c:\UrbanizationProjects", "ApiKey");         //  Alapértelmezett ApiKey hely Windows rendszereken (C: meghajtó)
-    string projectPathString = System.IO.Path.Combine(@"c:\UrbanizationProjects", "Projects");      //  Alapértelmezett mentési hely Windows rendszereken (C: meghajtó)
+    static string apikeyPathString = System.IO.Path.Combine(@"c:\UrbanizationProjects", "ApiKey");         //  Alapértelmezett ApiKey hely Windows rendszereken (C: meghajtó)
+    static string projectPathString = System.IO.Path.Combine(@"c:\UrbanizationProjects", "Projects");      //  Alapértelmezett mentési hely Windows rendszereken (C: meghajtó)
     string Apikey;      //  Google Api Key
+    bool useProxySettings;  //  Menti, hogy szerenténk-e használni  Proxy beállításokat
+    string address; //  Menti az IP címet
+    string port;    //  Menti a portot
     ProjectList datas;  //  Projekt adatait tárolja (Név, Elérési út, Adatok)
 
     //  Inicializálás
@@ -172,7 +175,105 @@ public partial class GoogleMaps : ContentPage
     // Download gombra kattintva ez fut le
     private void DownloadClicked(object sender, EventArgs e)
     {
-        //  Itt interface meghívás történik
+        ImageBG.IsVisible = false;
+        BrowseIMG.IsVisible = false;
+        ButtonLayout.IsVisible = false;
+        DownloadLayout.IsVisible = true;
+
+        int allcount = 0;
+
+        foreach (var item in datas.GetProjectList())
+        {
+            int count = 0;
+
+            pathString = Path.Combine(datas.GetPathString(), datas.GetProjectName().Remove(datas.GetProjectName().Length - 4), item.Num.ToString(), "01.bmp");
+            if (File.Exists(pathString))
+            {
+                count++;
+            }
+
+            pathString = Path.Combine(datas.GetPathString(), datas.GetProjectName().Remove(datas.GetProjectName().Length - 4), item.Num.ToString(), "02.bmp");
+            if (File.Exists(pathString))
+            {
+                count++;
+            }
+
+            pathString = Path.Combine(datas.GetPathString(), datas.GetProjectName().Remove(datas.GetProjectName().Length - 4), item.Num.ToString(), "04.bmp");
+            if (File.Exists(pathString))
+            {
+                count++;
+            }
+
+            string s = "";
+            if (count == 0)
+            {
+                s = " - No Image";
+                allcount++;
+            }
+            else if (count == 3) 
+            {
+                s = "";
+            }
+            else
+            {
+                s = " - Missing Image";
+                allcount++;
+            }
+
+            Label l = new Label
+            {
+                Text = item.Num + ": " + item.Name + ": " + "(Lat: " + item.Latitude + ", Lng: " + item.Longitude + ")" + s,
+                FontSize = 18
+            };
+            DownloadListLayout.Add(l);
+        }
+
+        PicNumLabel.Text = allcount.ToString();
+  
+    }
+
+    // Start Downloading gombra kattintva ez fut le
+    private void StartDownloadingClicked(object sender, EventArgs e)
+    {
+        //  interface meghívás
+    }
+
+    // Set gombra kattintva ez fut le
+    private void SetClicked(object sender, EventArgs e)
+    {
+        useProxySettings = UseProxyCheckBox.IsChecked;
+        address = addressEntry.Text.ToString();
+        port = portEntry.Text.ToString();
+
+        pathString = Path.Combine(apikeyPathString, "proxydatas.txt");
+        using (var fs = System.IO.File.CreateText(pathString))
+        {
+            fs.Write(address + "\n" + port + "\n" + useProxySettings.ToString());
+        }
+    }
+
+    public void GetProxyDatas()
+    {
+        StreamReader sr = new StreamReader(Path.Combine(apikeyPathString, "proxydatas.txt"));
+
+        List<string> proxyDatas = new List<string>();
+
+        while (!sr.EndOfStream)
+        {
+            proxyDatas.Add(sr.ReadLine());
+        }
+        sr.Close();
+
+        address = proxyDatas[0].ToString();
+        port = proxyDatas[1].ToString();
+        if (proxyDatas[2].ToString() == "True")
+        {
+            useProxySettings = true;
+        }
+        else
+        {
+            useProxySettings = false;
+        }
     }
 
     //  Help gombra kattintva ez fut le
@@ -199,6 +300,7 @@ public partial class GoogleMaps : ContentPage
         else
         {
             ImageBG.IsVisible = false;
+            DownloadLayout.IsVisible = false;
             BrowseIMG.IsVisible = true;
             ButtonLayout.IsVisible = true;
             ButtonLayout.Clear();
@@ -224,7 +326,7 @@ public partial class GoogleMaps : ContentPage
     protected void ImageShowClicked(object sender, EventArgs e)
     {
         Button button = sender as Button;
-        pathString = System.IO.Path.Combine(projectPathString, filename, button.Text.Substring(0,1), "01.bmp");
+        pathString = System.IO.Path.Combine(datas.GetPathString(), filename, button.Text.Substring(0,1), "01.bmp");
         BrowseIMG.Source = pathString;
     }
 
