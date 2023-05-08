@@ -11,11 +11,11 @@ public partial class Labels : ContentPage
     string subfile;     //  Projekt neve kiterjesztéssel
     string pathString;  //  Elérési útvonal
     static string projectPathString = System.IO.Path.Combine(@"c:\UrbanizationProjects", "Projects");      //  Alapértelmezett mentési hely Windows rendszereken (C: meghajtó)
-    ProjectList datas;
-    List<Button> buildingsButtons;
-    List<Button> vegetationsButtons;
-    List<Button> roadsButtons;
-    Color changeState;
+    ProjectList datas;  //  Projekt adatait tárolja (Név, Elérési út, Adatok)
+    List<Button> buildingsButtons;      //  Epületeket reprezentáló gombok listája
+    List<Button> vegetationsButtons;    //  Vegetációt reprezentáló gombok listája
+    List<Button> roadsButtons;          //  Utakat reprezentáló gombok listája
+    Color changeState;  // A globális szín, melyre változtatjuk az adott tulajdonságokat
 
     //  Inicializálás
     public Labels()
