@@ -22,6 +22,7 @@ public partial class GoogleMaps : ContentPage
 	{        
         InitializeComponent();
         MakeResponisve();
+        GetProxyDatas();
     }
 
     //  Inicializálás adatfogadással
@@ -36,6 +37,7 @@ public partial class GoogleMaps : ContentPage
             pathString = _datas.GetPathString();
         }
         MakeResponisve();
+        GetProxyDatas();
     }
 
     //  FrontEnd értékéket módosít
@@ -43,6 +45,10 @@ public partial class GoogleMaps : ContentPage
     {
         BrowseIMG.HeightRequest = Application.Current.MainPage.Width / 2.5;
         BrowseIMG.WidthRequest = Application.Current.MainPage.Width / 2.5;
+        DownloadListLayout.Margin = new Thickness(Application.Current.MainPage.Width / 20, 5, 5, 5);
+        ProxySettingsLabel.Margin = new Thickness(25, Application.Current.MainPage.Height / 5, 0, 0);
+        DonwloadListScroll.HeightRequest = Application.Current.MainPage.Height * 0.2;
+        ButtonListScroll.HeightRequest = Application.Current.MainPage.Height * 0.65;
     }
 
     //  Menüben a Project gombra kattintáskor ez fut le
@@ -145,6 +151,7 @@ public partial class GoogleMaps : ContentPage
         HelpButton.IsVisible = true;
         EditApiKey.IsVisible = false;
         SaveApiKeyButton.IsVisible = false;
+        DisplayAlert("Success", "Datas are updated!", "OK");
     }
 
     //  Visszaadja a Google Api Key-t
@@ -179,6 +186,10 @@ public partial class GoogleMaps : ContentPage
         BrowseIMG.IsVisible = false;
         ButtonLayout.IsVisible = false;
         DownloadLayout.IsVisible = true;
+        addressEntry.Text = address;
+        portEntry.Text = port;
+        UseProxyCheckBox.IsChecked = useProxySettings;
+        DownloadListLayout.Clear();       
 
         int allcount = 0;
 
@@ -222,8 +233,8 @@ public partial class GoogleMaps : ContentPage
 
             Label l = new Label
             {
-                Text = item.Num + ": " + item.Name + ": " + "(Lat: " + item.Latitude + ", Lng: " + item.Longitude + ")" + s,
-                FontSize = 18
+                Text = item.Num + ": " + item.Name + ": " + "(Lat: " + item.Latitude.ToString("##0.##") + ", Lng: " + item.Longitude.ToString("##0.##") + ")" + s,
+                FontSize = 12
             };
             DownloadListLayout.Add(l);
         }
@@ -241,17 +252,26 @@ public partial class GoogleMaps : ContentPage
     // Set gombra kattintva ez fut le
     private void SetClicked(object sender, EventArgs e)
     {
-        useProxySettings = UseProxyCheckBox.IsChecked;
-        address = addressEntry.Text.ToString();
-        port = portEntry.Text.ToString();
-
-        pathString = Path.Combine(apikeyPathString, "proxydatas.txt");
-        using (var fs = System.IO.File.CreateText(pathString))
+        if (addressEntry.Text == "" || portEntry.Text == "" || addressEntry.Text == null || portEntry.Text == null)
         {
-            fs.Write(address + "\n" + port + "\n" + useProxySettings.ToString());
+            DisplayAlert("Error", "Some fields are empty!", "OK");
         }
+        else
+        {
+            useProxySettings = UseProxyCheckBox.IsChecked;
+            address = addressEntry.Text.ToString();
+            port = portEntry.Text.ToString();
+
+            pathString = Path.Combine(apikeyPathString, "proxydatas.txt");
+            using (var fs = System.IO.File.CreateText(pathString))
+            {
+                fs.Write(address + "\n" + port + "\n" + useProxySettings.ToString());
+            }
+            DisplayAlert("Success", "Datas are updated!", "OK");
+        }     
     }
 
+    //  Beolvassa a proxydatas.txt fájlt
     public void GetProxyDatas()
     {
         StreamReader sr = new StreamReader(Path.Combine(apikeyPathString, "proxydatas.txt"));
@@ -264,16 +284,23 @@ public partial class GoogleMaps : ContentPage
         }
         sr.Close();
 
-        address = proxyDatas[0].ToString();
-        port = proxyDatas[1].ToString();
-        if (proxyDatas[2].ToString() == "True")
+        if (proxyDatas.Count == 0)
         {
-            useProxySettings = true;
+
         }
         else
         {
-            useProxySettings = false;
-        }
+            address = proxyDatas[0].ToString();
+            port = proxyDatas[1].ToString();
+            if (proxyDatas[2].ToString() == "True")
+            {
+                useProxySettings = true;
+            }
+            else
+            {
+                useProxySettings = false;
+            }
+        } 
     }
 
     //  Help gombra kattintva ez fut le
@@ -326,7 +353,7 @@ public partial class GoogleMaps : ContentPage
     protected void ImageShowClicked(object sender, EventArgs e)
     {
         Button button = sender as Button;
-        pathString = System.IO.Path.Combine(datas.GetPathString(), filename, button.Text.Substring(0,1), "01.bmp");
+        pathString = System.IO.Path.Combine(datas.GetPathString(), filename, button.Text.Split(",")[0], "01.bmp");
         BrowseIMG.Source = pathString;
     }
 

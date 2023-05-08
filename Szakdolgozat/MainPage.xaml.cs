@@ -36,6 +36,10 @@ public partial class MainPage : ContentPage
             {
 
             }
+            using (var fs = System.IO.File.CreateText(Path.Combine(apikeyPathString, "proxydatas.txt")))
+            {
+
+            }
         }       
     }
 
@@ -59,7 +63,14 @@ public partial class MainPage : ContentPage
 		{
 			return;
 		}
-        await Navigation.PushModalAsync(new MainPage(datas));
+        if (datas == null)
+        {
+            DisplayAlert("Error", "Open a Project!", "OK");
+        }
+        else
+        {
+            await Navigation.PushModalAsync(new MainPage(datas));
+        }       
     }
 
     //  Menüben a Google Maps gombra kattintáskor ez fut le
@@ -69,7 +80,14 @@ public partial class MainPage : ContentPage
         {
             return;
         }
-        await Navigation.PushModalAsync(new GoogleMaps(datas));
+        if (datas == null)
+        {
+            DisplayAlert("Error", "Open a Project!", "OK");
+        }
+        else
+        {
+            await Navigation.PushModalAsync(new GoogleMaps(datas));
+        }
     }
 
     //  Menüben az Urbanization Score gombra kattintáskor ez fut le
@@ -79,7 +97,14 @@ public partial class MainPage : ContentPage
         {
             return;
         }
-        await Navigation.PushModalAsync(new UrbanizationScore(datas));
+        if (datas == null)
+        {
+            DisplayAlert("Error", "Open a Project!", "OK");
+        }
+        else
+        {
+            await Navigation.PushModalAsync(new UrbanizationScore(datas));
+        }
     }
 
     //  Menüben az Annotation gombra kattintáskor ez fut le
@@ -89,7 +114,14 @@ public partial class MainPage : ContentPage
         {
             return;
         }
-        await Navigation.PushModalAsync(new Annotation(datas));
+        if (datas == null)
+        {
+            DisplayAlert("Error", "Open a Project!", "OK");
+        }
+        else
+        {
+            await Navigation.PushModalAsync(new Annotation(datas));
+        }
     }
 
     //  Menüben az Import / Export gombra kattintáskor ez fut le
@@ -99,12 +131,22 @@ public partial class MainPage : ContentPage
         {
             return;
         }
-        await Navigation.PushModalAsync(new ImportExport(datas));
+        if (datas == null)
+        {
+            DisplayAlert("Error", "Open a Project!", "OK");
+        }
+        else
+        {
+            await Navigation.PushModalAsync(new ImportExport(datas));
+        }
     }
 
     //  FrontEnd értékéket módosít
     public void MakeResponsive()
     {
+        EntryScrollArea.WidthRequest = Application.Current.MainPage.Width - 300;
+        EntryScrollArea.HeightRequest = Application.Current.MainPage.Height / 4;
+
         EntryArea.WidthRequest = Application.Current.MainPage.Width - 300;
         RemoveSelectedLocation.Margin = new Thickness(-10, Application.Current.MainPage.Width / 63, 0, 0);
         LocationName.WidthRequest = Application.Current.MainPage.Width / 8;
@@ -126,6 +168,15 @@ public partial class MainPage : ContentPage
         ConvertAngleBTN.FontSize = (Application.Current.MainPage.Height / 22) / 2.922;
         RemoveSelectedLocation.FontSize = (Application.Current.MainPage.Height / 22) / 2.922;
         RemoveAllLocation.FontSize = (Application.Current.MainPage.Height / 22) / 2.922;
+        LongitudeConvertLabel.FontSize = (Application.Current.MainPage.Height / 22) / 2.922;
+        LatitudeConvertLabel.FontSize = (Application.Current.MainPage.Height / 22) / 2.922;
+        ConvertBtn.FontSize = (Application.Current.MainPage.Height / 22) / 2.922;
+        HourEntryLong.FontSize = (Application.Current.MainPage.Height / 22) / 2.922;
+        MinEntryLong.FontSize = (Application.Current.MainPage.Height / 22) / 2.922;
+        SecEntryLong.FontSize = (Application.Current.MainPage.Height / 22) / 2.922;
+        HourEntryLat.FontSize = (Application.Current.MainPage.Height / 22) / 2.922;
+        MinEntryLat.FontSize = (Application.Current.MainPage.Height / 22) / 2.922;
+        SecEntryLat.FontSize = (Application.Current.MainPage.Height / 22) / 2.922;
     }
 
     //  New Project gombra kattintva ez fut le
@@ -229,7 +280,19 @@ public partial class MainPage : ContentPage
 
             subfile = filename + ".csv";
 
-            datas.AddNewProjectType(new ProjectType(max + 1 , Convert.ToInt32(LatitudeName.Text.ToString()), Convert.ToInt32(LongitudeName.Text.ToString()), LocationName.Text.ToString(), Convert.ToInt32(AreaSize.Text.ToString()), Convert.ToInt32(Zoom.Text.ToString())));
+            try
+            {
+                datas.AddNewProjectType(new ProjectType(max + 1, Convert.ToDouble(LatitudeName.Text.ToString()), Convert.ToDouble(LongitudeName.Text.ToString()), LocationName.Text.ToString(), Convert.ToDouble(AreaSize.Text.ToString()), Convert.ToDouble(Zoom.Text.ToString())));
+                LocationName.Text = "";
+                LatitudeName.Text = "";
+                LongitudeName.Text = "";
+                AreaSize.Text = "";
+                Zoom.Text = "";
+            }
+            catch (Exception ex)
+            {
+                DisplayAlert("Error", "The formation of the input data was incorrect!", "OK");
+            }
 
             ShowEntryArea();
 
@@ -240,7 +303,29 @@ public partial class MainPage : ContentPage
     //  Convert Angle gombra kattintva ez fut le
     private void ConvertAngleClicked(object sender, EventArgs e)
     {
-        //  Még nem tudom mit csinál pontosan
+        AddLocationBTN.IsVisible = false;
+        ConvertAngleBTN.IsVisible = false;       
+        LatitudeLayout.IsVisible = true;
+        LongitudeLayout.IsVisible = true;
+        ConvertBtn.IsVisible = true;
+    }
+
+    //  Convert gombra kattintva ez fut le
+    private void ConvertClicked(object sender, EventArgs e)
+    {
+        LatitudeName.Text = ((HourEntryLat.Text == "" ? 0.00 : Convert.ToDouble(HourEntryLat.Text)) + (MinEntryLat.Text == "" ? 0.00 : (Convert.ToDouble(MinEntryLat.Text) / 60)) + (SecEntryLat.Text == "" ? 0.00 : (Convert.ToDouble(SecEntryLat.Text) / 3600))).ToString("##0.######");
+        LongitudeName.Text = ((HourEntryLong.Text == "" ? 0.00 : Convert.ToDouble(HourEntryLong.Text)) + (MinEntryLong.Text == "" ? 0.00 : (Convert.ToDouble(MinEntryLong.Text) / 60)) + (SecEntryLong.Text == "" ? 0.00 : (Convert.ToDouble(SecEntryLong.Text) / 3600))).ToString("##0.######");
+        AddLocationBTN.IsVisible = true;
+        ConvertAngleBTN.IsVisible = true;
+        LatitudeLayout.IsVisible = false;
+        LongitudeLayout.IsVisible = false;
+        ConvertBtn.IsVisible = false;
+        HourEntryLat.Text = "";
+        MinEntryLat.Text = "";
+        SecEntryLat.Text = "";
+        HourEntryLong.Text = "";
+        MinEntryLong.Text = "";
+        SecEntryLong.Text = "";
     }
 
     //  Remove Selected Location gombra kattintva ez fut le
@@ -350,11 +435,22 @@ public partial class MainPage : ContentPage
                         }
                         else
                         {
-                            datas.AddNewPCAResult(new PCAResultType(Convert.ToInt32(subs[0][subs[0].Length - 8].ToString()), subs[0].ToString(), Convert.ToInt32(subs[1].ToString()), Convert.ToInt32(subs[2].ToString()), Convert.ToInt32(subs[3].ToString()), Convert.ToDouble(subs[4].Replace('.', ',').ToString()), Convert.ToDouble(subs[5].Replace('.', ',').ToString()), Convert.ToDouble(subs[6].Replace('.', ',').ToString()), subs[7].ToString()));
+                            datas.AddNewPCAResult(new PCAResultType(Convert.ToInt32(subs[0].Split("\\")[3].ToString()), subs[0].ToString(), Convert.ToInt32(subs[1].ToString()), Convert.ToInt32(subs[2].ToString()), Convert.ToInt32(subs[3].ToString()), Convert.ToDouble(subs[4].Replace('.', ',').ToString()), Convert.ToDouble(subs[5].Replace('.', ',').ToString()), Convert.ToDouble(subs[6].Replace('.', ',').ToString()), subs[7].ToString()));
                         }
                     }
                 }
             }
+            HourEntryLat.Text = "";
+            MinEntryLat.Text = "";
+            SecEntryLat.Text = "";
+            HourEntryLong.Text = "";
+            MinEntryLong.Text = "";
+            SecEntryLong.Text = "";
+            LocationName.Text = "";
+            LatitudeName.Text = "";
+            LongitudeName.Text = "";
+            AreaSize.Text = "";
+            Zoom.Text = "";
 
             return result;
         }
@@ -406,7 +502,7 @@ public partial class MainPage : ContentPage
                     int count = 0;
                     foreach (var item2 in System.IO.Directory.GetDirectories(System.IO.Path.Combine(datas.GetPathString(), datas.GetProjectName().Remove(datas.GetProjectName().Length - 4))))
                     {
-                        if (item.Num == Convert.ToInt32(item2.ToString()[item2.ToString().Length - 1].ToString()))
+                        if (item.Num == Convert.ToInt32(item2.Split("\\")[4].ToString()))
                         {
                             count++;
                         }
@@ -422,7 +518,7 @@ public partial class MainPage : ContentPage
                     int count = 0;
                     foreach (var item2 in datas.GetProjectList())
                     {
-                        if (item2.Num == Convert.ToInt32(item.ToString()[item.ToString().Length - 1].ToString()))
+                        if (item2.Num == Convert.ToInt32(item.ToString().Split("\\")[4].ToString()))
                         {                           
                             count++;
                         }
@@ -439,7 +535,8 @@ public partial class MainPage : ContentPage
                         }
                         System.IO.Directory.Delete(item);
                     }
-                }            
+                }
+                DisplayAlert("Success", "The Project is Saved!", "OK");
             }
             else
             {

@@ -102,6 +102,8 @@ public partial class ImportExport : ContentPage
             ImportLayout.IsVisible = false;
             SelectButtons2Layout.IsVisible = false;
             ExportLayout.WidthRequest = Application.Current.MainPage.Width - Application.Current.MainPage.Height + 90;
+            ExportListScroll.HeightRequest = Application.Current.MainPage.Height * 0.65;
+            ImportListScroll.HeightRequest = Application.Current.MainPage.Height * 0.65;
             ExportSelectedLocationButton.Margin = Application.Current.MainPage.Height - 350;
             ImageBG.IsVisible = false;
             ExportLayout.IsVisible = true;
@@ -276,6 +278,7 @@ public partial class ImportExport : ContentPage
                 {
                     item.Key.IsChecked = false;
                 }
+                DisplayAlert("Success", "Files are exported!", "OK");
             }
         }      
     }
@@ -475,12 +478,12 @@ public partial class ImportExport : ContentPage
             if (item.Key.IsChecked)
             {
                 max++;
-                s += max + item.Value.Remove(0, 1) + "\n";
-                string[] subs = item.Value.Remove(0,2).Split(';');
+                s += max + item.Value.Remove(0, item.Value.Split(';')[0].Length) + "\n";
+                string[] subs = item.Value.Split(';');
 
-                datas.AddNewProjectType(new ProjectType(max, Convert.ToDouble(subs[0].Replace('.',',')), Convert.ToDouble(subs[1].Replace('.', ',')), subs[2], Convert.ToDouble(subs[3].Replace('.', ',')), Convert.ToDouble(subs[4].Replace('.', ','))));
+                datas.AddNewProjectType(new ProjectType(max, Convert.ToDouble(subs[1].Replace('.',',')), Convert.ToDouble(subs[2].Replace('.', ',')), subs[3], Convert.ToDouble(subs[4].Replace('.', ',')), Convert.ToDouble(subs[5].Replace('.', ','))));
 
-                string from = System.IO.Path.Combine(extract, importName, item.Value.ToString()[0].ToString());
+                string from = System.IO.Path.Combine(extract, importName, item.Value.Split(";")[0].ToString());
                 string to = System.IO.Path.Combine(datas.GetPathString(), datas.GetProjectName().Remove(datas.GetProjectName().Length - 4), max.ToString());
 
                 Copy(from, to);
@@ -522,5 +525,6 @@ public partial class ImportExport : ContentPage
         {
             item.Key.IsChecked = false;
         }
+        DisplayAlert("Success", "Files are imported!", "OK");
     }
 }

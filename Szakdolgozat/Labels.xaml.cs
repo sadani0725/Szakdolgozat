@@ -16,12 +16,15 @@ public partial class Labels : ContentPage
     List<Button> vegetationsButtons;
     List<Button> roadsButtons;
     Color changeState;
+
+    //  Inicializálás
     public Labels()
     {
         InitializeComponent();
         LoadPage();
     }
 
+    //  Inicializálás adatfogadással
     public Labels(ProjectList _datas)
     {
         InitializeComponent();
@@ -36,6 +39,7 @@ public partial class Labels : ContentPage
         LoadPage();
     }
 
+    // Betölti az oldal mûködéséhez szükséges adatokat
     public void LoadPage()
     {
         BuildingLayout.Clear();
@@ -76,13 +80,13 @@ public partial class Labels : ContentPage
         ShowLabels();
     }
 
-    
-
+    //  Folyamatosan ellenõrzi, hogy változott-e a legördülõ lista kiválasztott eleme
     private void PickerChanged(object sender, EventArgs e)
     {
         ShowLabels();
     }
 
+    //  Megjeleníti a kiválasztott terület adatait
     public void ShowLabels()
     {
         BuildingLayout.Clear();
@@ -106,11 +110,6 @@ public partial class Labels : ContentPage
         };
 
         StackLayout r = new StackLayout
-        {
-            Orientation = StackOrientation.Horizontal,
-        };
-
-        StackLayout i = new StackLayout
         {
             Orientation = StackOrientation.Horizontal,
         };
@@ -238,6 +237,7 @@ public partial class Labels : ContentPage
         }
     }
 
+    //  Az egyes alterületekre kattintva ez fut le
     protected void ImageShowClicked(object sender, EventArgs e)
     {
         Button button = sender as Button;
@@ -279,6 +279,7 @@ public partial class Labels : ContentPage
         }
     }
 
+    //  A beállítandó területi színt fehérre állítja
     protected void SetWhite(object sender, EventArgs e)
     {
         changeState = Color.Parse("White");
@@ -290,6 +291,7 @@ public partial class Labels : ContentPage
         SetGrayBTN.BorderWidth = 1;
     }
 
+    //  A beállítandó területi színt szürkére állítja
     protected void SetGray(object sender, EventArgs e)
     {
         if (isRoad.IsChecked)
@@ -308,6 +310,7 @@ public partial class Labels : ContentPage
         }            
     }
 
+    //  A beállítandó területi színt feketére állítja
     protected void SetBlack(object sender, EventArgs e)
     {
         changeState = Color.Parse("Black");
@@ -319,6 +322,7 @@ public partial class Labels : ContentPage
         SetWhiteBTN.BorderWidth = 1;
     }
 
+    // Ellenõrzi, hogy az alterületek közül, az utak tulajdonságait szeretnénk-e változtatni
     protected void IsRoadClicked(object sender, EventArgs e)
     {
         if (isRoad.IsChecked && changeState == Color.Parse("Gray"))
@@ -333,6 +337,7 @@ public partial class Labels : ContentPage
         }        
     }
 
+    // A Save Changes gombra kattintva ez fut le
     protected void SaveChangesClicked(object sender, EventArgs e)
     {
         int counter = 0;

@@ -74,6 +74,12 @@ public partial class Annotation : ContentPage
     //  Show Labels gombra kattintva ez fut le
     private void ShowLabelsClicked(object sender, EventArgs e)
     {
+        if (datas.GetSVMList().Count == 0)
+        {
+            DisplayAlert("Error", "Calculate First!", "OK");
+            return;
+        }
+
         var labelsWindow = new Window
         {
             Page = new Labels(datas)
@@ -82,32 +88,18 @@ public partial class Annotation : ContentPage
             }          
         };
 
-        labelsWindow.Destroying += (e, s) =>
-        {
-            labelsWindow = null;
-        };
-
-        labelsWindow.Stopped += (e, s) =>
-        {
-            labelsWindow = null;
-        };
-
-        labelsWindow.Resumed += (e, s) =>
-        {
-            labelsWindow = null;
-        };
-
-        labelsWindow.Deactivated += (e, s) =>
-        {
-            labelsWindow = null;
-        };
-
         Application.Current.OpenWindow(labelsWindow);
     }
 
     //  Recalculate Indices gombra kattintva ez fut le
     private void RecalculateIndicesClicked(object sender, EventArgs e)
     {
+        if (datas.GetSVMList().Count == 0)
+        {
+            DisplayAlert("Error", "Calculate First!", "OK");
+            return;
+        }
+
         double avgB = 0;
         double avgV = 0;
         int sumB2 = 0;
@@ -165,8 +157,11 @@ public partial class Annotation : ContentPage
 
         WritePCA();
 
+        DisplayAlert("Success", "Calculation done!", "OK");
+
     }
 
+    //  PCA értékek számításáért felelõs
     public double[][] PC1(double[][] data)
     {
         var pca = new PrincipalComponentAnalysis()
@@ -182,27 +177,36 @@ public partial class Annotation : ContentPage
         return pca.Transform(data);
     }
 
+    //  Beolvassa az svmResult.csv fájlt
     public void ReadSVM()
     {
         datas.GetSVMList().Clear();
 
         string path = @"" + Path.Combine(datas.GetPathString(), datas.GetProjectName().Remove(datas.GetProjectName().Length - 4), "svmResult.csv");
 
-        string[] lines = System.IO.File.ReadAllLines(path);
-        foreach (string line in lines)
+        if (!System.IO.File.Exists(path))
         {
-            string[] subs = line.Split(';');
-            if (subs[0] == "Picture_name")
-            {
 
-            }
-            else
-            {
-                datas.AddNewSVMResult(new SVMResultType(subs[0], System.Convert.ToInt32(subs[0][subs[0].Remove(subs[0].Length - 7).Length - 1].ToString()), System.Convert.ToInt32(subs[1]), System.Convert.ToInt32(subs[2]), System.Convert.ToInt32(subs[3]), System.Convert.ToInt32(subs[4])));
-            }
         }
+        else
+        {
+            string[] lines = System.IO.File.ReadAllLines(path);
+            foreach (string line in lines)
+            {
+                string[] subs = line.Split(';');
+                if (subs[0] == "Picture_name")
+                {
+
+                }
+                else
+                {
+                    datas.AddNewSVMResult(new SVMResultType(subs[0], Convert.ToInt32(subs[0].Split("\\")[3].ToString()), System.Convert.ToInt32(subs[1]), System.Convert.ToInt32(subs[2]), System.Convert.ToInt32(subs[3]), System.Convert.ToInt32(subs[4])));
+                }
+            }
+        }      
     }
 
+    //  Menti a változtatásokat a pcaResult.csv fájlba
     public void WritePCA()
     {
         string path = @"" + Path.Combine(datas.GetPathString(), datas.GetProjectName().Remove(datas.GetProjectName().Length - 4), "pcaResult.csv");

@@ -108,9 +108,11 @@
                         IsVisible="false"
                         BackgroundColor="AliceBlue">
             </Image>
-            <StackLayout Orientation="Vertical" Margin="25, 5, 5, 5" x:Name="ButtonLayout" IsVisible="false">
-                
-            </StackLayout>
+            <ScrollView Margin="25, -15, 5, 5" VerticalOptions="FillAndExpand" VerticalScrollBarVisibility="Always" Orientation="Both" x:Name="ButtonListScroll">
+                <StackLayout Orientation="Vertical" x:Name="ButtonLayout" IsVisible="false">
+
+                </StackLayout>
+            </ScrollView>
         </StackLayout>
 
     </StackLayout>

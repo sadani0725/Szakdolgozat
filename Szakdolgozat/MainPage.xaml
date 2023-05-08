@@ -260,9 +260,9 @@
         </StackLayout>
 
         <StackLayout Orientation="Horizontal" x:Name="layoutEntryArea" IsVisible="false">
-            
-            <ScrollView>
-                <StackLayout Orientation="Vertical" x:Name="EntryArea" Margin="40, 30, 0, 0">
+
+            <ScrollView VerticalOptions="FillAndExpand" VerticalScrollBarVisibility="Always" Orientation="Both" Margin="40, 30, 15, 0" x:Name="EntryScrollArea">
+                <StackLayout Orientation="Vertical" x:Name="EntryArea" >
                     
                 </StackLayout>
             </ScrollView>
@@ -285,6 +285,48 @@
                         x:Name="ConvertAngleBTN"
                         Clicked="ConvertAngleClicked">
                 </Button>
+
+                <StackLayout Orientation="Horizontal" IsVisible="False" x:Name="LatitudeLayout" VerticalOptions="Center" Margin="-10, 0, 5, 0" WidthRequest="200">
+                    <Label Text="Lat: " x:Name="LatitudeConvertLabel" VerticalOptions="Center" WidthRequest="30">
+
+                    </Label>
+                    <Entry x:Name="HourEntryLat" Placeholder="Hour">
+
+                    </Entry >
+                    <Entry x:Name="MinEntryLat" Placeholder="Min">
+
+                    </Entry >
+                    <Entry x:Name="SecEntryLat" Placeholder="Sec">
+
+                    </Entry>
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal" IsVisible="False" x:Name="LongitudeLayout" VerticalOptions="Center" Margin="-10, 5, 5, 5" WidthRequest="200">
+                    <Label Text="Lon: " x:Name="LongitudeConvertLabel" VerticalOptions="Center" WidthRequest="30">
+
+                    </Label>
+                    <Entry x:Name="HourEntryLong" Placeholder="Hour">
+
+                    </Entry >
+                    <Entry x:Name="MinEntryLong" Placeholder="Min">
+
+                    </Entry >
+                    <Entry x:Name="SecEntryLong" Placeholder="Sec">
+
+                    </Entry>
+                </StackLayout>
+
+                <Button Text="Convert"
+                        WidthRequest="200"
+                        BackgroundColor="AliceBlue"
+                        TextColor="Black"
+                        x:Name="ConvertBtn"
+                        Clicked="ConvertClicked"
+                        IsVisible="False"
+                        VerticalOptions="Center">
+
+                </Button>
+
                 <Button Text="Remove Selected Location"
                         WidthRequest="200"
                         BackgroundColor="AliceBlue"

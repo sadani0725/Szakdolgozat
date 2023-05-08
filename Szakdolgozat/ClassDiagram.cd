@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Szakdolgozat.MainActivity" Collapsed="true">
+    <Position X="9.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Platforms\Android\MainActivity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Szakdolgozat.MainApplication">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Platforms\Android\MainApplication.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Szakdolgozat.Annotation">
+    <Position X="13" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAEAAEAAAAARIAAAAAAAAAACAAAICAAAACAAAAAICAA=</HashCode>
+      <FileName>Annotation.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Szakdolgozat.App">
+    <Position X="7.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Szakdolgozat.AppShell">
+    <Position X="9.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AppShell.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Szakdolgozat.GoogleMaps">
+    <Position X="9.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IABEAUFAACABAACAAJAIAQACBAIICAgCAKAgAAQIAAA=</HashCode>
+      <FileName>GoogleMaps.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Szakdolgozat.ImportExport">
+    <Position X="14.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAIEFIBEJBAABAAAQIUEAiBgAICAAACCACAQQIAAA=</HashCode>
+      <FileName>ImportExport.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Szakdolgozat.Labels">
+    <Position X="13" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAEAAAFAIAAAAEAAAAQAAAAABAAEAAAAFCAAAEQAiAA=</HashCode>
+      <FileName>Labels.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Szakdolgozat.MainPage">
+    <Position X="7.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IQBBIEFABFgBBAAAAAAAAAACBACICQACACAAAAQYAEI=</HashCode>
+      <FileName>MainPage.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Szakdolgozat.MauiProgram">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MauiProgram.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Szakdolgozat.PCAResultType">
+    <Position X="2.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IEAQAAEABAAAAAIAAAAAAgQAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PCAResultType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Szakdolgozat.ProjectList">
+    <Position X="6" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAIQgAAAAAIAEAAAAAAQAgBAIAACQAAEABAADQAAAA=</HashCode>
+      <FileName>ProjectList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Szakdolgozat.ProjectType">
+    <Position X="6" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAEAAgAAAEAAIAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ProjectType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Szakdolgozat.SVMResultType">
+    <Position X="4.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>KAAAAAAAAAAAAAAAAABAAAUAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SVMResultType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Szakdolgozat.UrbanizationScore">
+    <Position X="11.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEFAAAABACAAAAAAAQACBAAICAAAACQAAAQIAAA=</HashCode>
+      <FileName>UrbanizationScore.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

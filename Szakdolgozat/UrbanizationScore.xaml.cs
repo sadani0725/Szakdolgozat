@@ -36,6 +36,7 @@ public partial class UrbanizationScore : ContentPage
     {
         BrowseIMG.HeightRequest = Application.Current.MainPage.Width / 2.5;
         BrowseIMG.WidthRequest = Application.Current.MainPage.Width / 2.5;
+        ButtonListScroll.HeightRequest = Application.Current.MainPage.Height * 0.65;
     }
 
     //  Menüben a Project gombra kattintáskor ez fut le
@@ -103,7 +104,7 @@ public partial class UrbanizationScore : ContentPage
         }
         else
         {
-            pathString = System.IO.Path.Combine(projectPathString, filename, "pcaResult.csv");
+            pathString = System.IO.Path.Combine(datas.GetPathString(), filename, "pcaResult.csv");
 
             if (!System.IO.File.Exists(pathString))
             {
@@ -145,7 +146,7 @@ public partial class UrbanizationScore : ContentPage
     protected void ImageShowClicked(object sender, EventArgs e)
     {
         Button button = sender as Button;
-        pathString = System.IO.Path.Combine(projectPathString, filename, button.Text.Substring(0, 1), "01.bmp");
+        pathString = System.IO.Path.Combine(datas.GetPathString(), filename, button.Text.Split(";")[0], "01.bmp");
         BrowseIMG.Source = pathString;
     }
 }

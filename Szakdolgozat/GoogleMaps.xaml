@@ -146,9 +146,12 @@
                         IsVisible="false"
                         BackgroundColor="AliceBlue">
             </Image>
-            <StackLayout Orientation="Vertical" Margin="25, 5, 5, 5" x:Name="ButtonLayout" IsVisible="false">
-                
-            </StackLayout>
+
+            <ScrollView Margin="25, -60, 5, 5" VerticalOptions="FillAndExpand" VerticalScrollBarVisibility="Always" Orientation="Both" x:Name="ButtonListScroll">
+                <StackLayout Orientation="Vertical"  x:Name="ButtonLayout" IsVisible="false">
+
+                </StackLayout>
+            </ScrollView>
             
             <StackLayout Orientation="Vertical" Margin="25, 25, 5, 5" x:Name="DownloadLayout" IsVisible="false">
                 
@@ -169,14 +172,16 @@
                             Margin="50, 0, 0, 0"
                             VerticalOptions="Start">
                     </Button>
-                    <StackLayout Orientation="Vertical" Margin="300, 5, 5, 5" x:Name="DownloadListLayout">
+                    <ScrollView VerticalOptions="FillAndExpand" VerticalScrollBarVisibility="Always" Orientation="Both" x:Name="DonwloadListScroll">
+                        <StackLayout Orientation="Vertical" x:Name="DownloadListLayout">
 
-                    </StackLayout>
+                        </StackLayout>
+                    </ScrollView>
                 </StackLayout>
 
                 
 
-                <Label Text="Proxy Settings" FontSize="Title" Margin="25, 350, 0, 0">
+                <Label Text="Proxy Settings" FontSize="Title" x:Name="ProxySettingsLabel">
 
                 </Label>
 
